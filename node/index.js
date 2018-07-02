@@ -29,15 +29,17 @@ var client = new plaid.Client(
 var app = express();
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(bodyParser.json());
 
 app.get('/', function(request, response, next) {
   response.render('index.ejs', {
     PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
-    PLAID_ENV: PLAID_ENV,
+    PLAID_ENV: PLAID_ENV
   });
 });
 
@@ -56,7 +58,7 @@ app.post('/get_access_token', function(request, response, next) {
     console.log('Access Token: ' + ACCESS_TOKEN);
     console.log('Item ID: ' + ITEM_ID);
     response.json({
-      'error': false
+      error: false
     });
   });
 });
@@ -77,7 +79,7 @@ app.get('/accounts', function(request, response, next) {
     response.json({
       error: false,
       accounts: authResponse.accounts,
-      numbers: authResponse.numbers,
+      numbers: authResponse.numbers
     });
   });
 });
@@ -94,7 +96,10 @@ app.post('/item', function(request, response, next) {
     }
 
     // Also pull information about the institution
-    client.getInstitutionById(itemResponse.item.institution_id, function(err, instRes) {
+    client.getInstitutionById(itemResponse.item.institution_id, function(
+      err,
+      instRes
+    ) {
       if (err != null) {
         var msg = 'Unable to pull institution information from the Plaid API.';
         console.log(msg + '\n' + JSON.stringify(error));
@@ -104,7 +109,7 @@ app.post('/item', function(request, response, next) {
       } else {
         response.json({
           item: itemResponse.item,
-          institution: instRes.institution,
+          institution: instRes.institution
         });
       }
     });
@@ -113,21 +118,31 @@ app.post('/item', function(request, response, next) {
 
 app.post('/transactions', function(request, response, next) {
   // Pull transactions for the Item for the last 30 days
-  var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+  var startDate = moment()
+    .subtract(30, 'days')
+    .format('YYYY-MM-DD');
   var endDate = moment().format('YYYY-MM-DD');
-  client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
-    count: 250,
-    offset: 0,
-  }, function(error, transactionsResponse) {
-    if (error != null) {
-      console.log(JSON.stringify(error));
-      return response.json({
-        error: error
-      });
+  client.getTransactions(
+    ACCESS_TOKEN,
+    startDate,
+    endDate,
+    {
+      count: 250,
+      offset: 0
+    },
+    function(error, transactionsResponse) {
+      if (error != null) {
+        console.log(JSON.stringify(error));
+        return response.json({
+          error: error
+        });
+      }
+      console.log(
+        'pulled ' + transactionsResponse.transactions.length + ' transactions'
+      );
+      response.json(transactionsResponse);
     }
-    console.log('pulled ' + transactionsResponse.transactions.length + ' transactions');
-    response.json(transactionsResponse);
-  });
+  );
 });
 
 var server = app.listen(APP_PORT, function() {
