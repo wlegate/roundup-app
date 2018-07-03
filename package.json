@@ -4,7 +4,7 @@
   "description": "Roundup credit card purchases to the nearest dollar, donating the change to causes you care about.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "export NODE_ENV=test && mocha --timeout 8000 test/",
     "start": "node index.js",
     "create-db": "createdb roundup-app-db && node scripts/create-db.js",
     "heroku-postbuild": "npm install"
@@ -21,6 +21,11 @@
     "moment": "2.19.x",
     "pg": "^6.1.0",
     "plaid": "2.6.x"
+  },
+  "devDependencies": {
+    "expect": "^23.2.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.1.0"
   },
   "engines": {
     "node": "8.5.0",
