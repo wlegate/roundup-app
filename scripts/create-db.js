@@ -13,6 +13,6 @@ client.connect();
 const sql = fs.readFileSync('./scripts/create-db.sql');
 
 const query = client.query(sql);
-query.on('end', () => {
-  client.end();
-});
+// query.on('end', () => {
+//   client.end();
+// });
