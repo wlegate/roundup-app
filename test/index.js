@@ -1,1 +1,1 @@
-require('./js/test');
+require('./js/routes');
