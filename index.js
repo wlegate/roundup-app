@@ -38,7 +38,9 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.get('/', authenticationController.isAuthenticated);
+app.get('/', authenticationController.isAuthenticated, (req, res) => {
+  res.send('Homepage goes here…');
+});
 
 /**
  * Creates db User and Session
@@ -99,7 +101,9 @@ app.post('/login', (req, res) => {});
  * ]
  *
  */
-app.get('/accounts', (req, res) => {});
+app.get('/accounts', (req, res) => {
+  res.send('Accounts go here…');
+});
 
 /**
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
@@ -130,7 +134,9 @@ app.get('/accounts', (req, res) => {});
  * ]
  *
  */
-app.get('/transactions', (req, res) => {});
+app.get('/transactions', (req, res) => {
+  res.send('Transactions go here…');
+});
 
 // ADMIN ROUTES
 
