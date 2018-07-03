@@ -1,7 +1,7 @@
 {
-  "name": "plaid-node-walkthrough",
+  "name": "pennies-for-progress",
   "version": "0.1.0",
-  "description": "A sample app and accompanying walkthrough for the Plaid API.",
+  "description": "Roundup credit card purchases to the nearest dollar, donating the change to causes you care about.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
     "heroku-postbuild": "npm install"
   },
   "author": "William LeGate, Shen-Shen Wu, Will Howard, and Christopher Washburn",
-  "repository": "https://github.com/plaid/quickstart",
+  "repository": "https://github.com/wlegate/roundup-app",
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.15.x",
