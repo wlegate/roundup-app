@@ -6,7 +6,7 @@
   "scripts": {
     "test": "export NODE_ENV=test && mocha --timeout 8000 test/",
     "start": "node index.js",
-    "create-db": "createdb roundup-app-db && node scripts/create-db.js",
+    "create-db": "node scripts/create-db.js",
     "heroku-postbuild": "npm install"
   },
   "author": "William LeGate, Shen-Shen Wu, Will Howard, and Christopher Washburn",
