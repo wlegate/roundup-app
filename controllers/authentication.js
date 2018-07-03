@@ -12,6 +12,7 @@ const isAuthenticated = (req, res, next) => {
   } else {
     // redirect to login
   }
+  next();
 };
 
 module.exports = { register, login, startSession, isAuthenticated };
