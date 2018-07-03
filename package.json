@@ -4,7 +4,7 @@
   "description": "A sample app and accompanying walkthrough for the Plaid API.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "export NODE_ENV=test && mocha --timeout 8000 test/",
     "start": "bash ./scripts/run.sh"
   },
   "author": "developers@plaid.com",
@@ -17,5 +17,9 @@
     "express": "4.13.x",
     "moment": "2.19.x",
     "plaid": "2.6.x"
+  },
+  "devDependencies": {
+    "expect": "^23.2.0",
+    "mocha": "^5.2.0"
   }
 }
