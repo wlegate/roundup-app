@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS "Charge";
 
 DROP TABLE IF EXISTS "ISO Currency Code";
 
+
 CREATE TABLE "User" (
 	"_id" serial NOT NULL,
 	"email" varchar NOT NULL UNIQUE,
@@ -48,7 +49,7 @@ CREATE TABLE "User" (
 
 CREATE TABLE "Account" (
 	"_id" serial NOT NULL,
-	"user_id" varchar NOT NULL,
+	"user_id" serial NOT NULL,
 	"plaid_item_id" varchar NOT NULL,
 	"iso_currency_code" varchar NOT NULL,
 	"name" varchar NOT NULL,
@@ -98,9 +99,9 @@ CREATE TABLE "Transaction" (
 	"date" timestamp with time zone NOT NULL,
 	"location" json NOT NULL,
 	"name" varchar NOT NULL,
-	"pending" BOOLEAN NOT NULL,
+	"is_pending" BOOLEAN NOT NULL,
 	"charge_id" serial NOT NULL,
-	"transaction_type" varchar NOT NULL,
+	"type" varchar NOT NULL,
 	"plaid_pending_transaction_id" varchar NOT NULL,
 	CONSTRAINT Transaction_pk PRIMARY KEY ("_id")
 ) WITH (
