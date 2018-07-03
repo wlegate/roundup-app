@@ -6,13 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "create-db": "node scripts/create-db.js"
+    "create-db": "createdb roundup-app-db && node scripts/create-db.js"
   },
   "author": "William LeGate, Shen-Shen Wu, Will Howard, and Christopher Washburn",
   "repository": "https://github.com/plaid/quickstart",
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.15.x",
+    "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
     "ejs": "2.5.x",
     "envvar": "1.1.x",

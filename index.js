@@ -6,8 +6,9 @@ const envvar = require('envvar');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const moment = require('moment');
+const cookieParser = require('cookie-parser');
 const plaid = require('plaid');
+const authenticationController = require('./controllers/authentication');
 
 const APP_PORT = envvar.number('APP_PORT');
 const PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
@@ -26,6 +27,7 @@ const client = new plaid.Client(
 console.log(`test app: ${app}`);
 
 app.use(express.static('public'));
+app.use(cookieParser());
 app.set('view engine', 'ejs');
 
 app.use(
@@ -35,6 +37,8 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+app.get('/', authenticationController.isAuthenticated);
 
 /**
  * Creates db User and Session
@@ -52,7 +56,14 @@ app.use(bodyParser.json());
  * }
  *
  */
-app.post('/register', (req, res) => {});
+app.post(
+  '/register',
+  authenticationController.register,
+  authenticationController.startSession,
+  (req, res) => {
+    res.redirect('/');
+  }
+);
 
 /**
  * Validates login credentials and creates db Session
