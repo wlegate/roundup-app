@@ -1,5 +1,3 @@
-psql \
-
 ALTER TABLE "Account" DROP CONSTRAINT IF EXISTS "Account_fk0";
 
 ALTER TABLE "Account" DROP CONSTRAINT IF EXISTS "Account_fk1";
