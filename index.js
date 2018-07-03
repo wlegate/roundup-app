@@ -34,6 +34,7 @@ app.use(
 app.use(cookieParser());
 
 app.set('view engine', 'ejs');
+app.set('port', APP_PORT);
 
 app.get('/', authenticationController.isAuthenticated, (req, res) => {
   res.send('Homepage goes here…');
