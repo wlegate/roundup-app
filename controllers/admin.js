@@ -50,3 +50,5 @@ router.get('/transactions', (req, res) => {
  *
  */
 router.post('/accounts', (req, res) => {});
+
+module.exports = router;
