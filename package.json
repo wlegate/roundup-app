@@ -16,7 +16,6 @@
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
     "ejs": "2.5.x",
-    "envvar": "1.1.x",
     "express": "4.13.x",
     "moment": "2.19.x",
     "pg": "^6.1.0",

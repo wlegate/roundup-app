@@ -1,1 +1,1 @@
-web: node index.js
+web: node scripts/create-db.js && node index.js

@@ -2,7 +2,6 @@
 
 require('dotenv').config();
 
-const envvar = require('envvar');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -12,10 +11,10 @@ const authenticationController = require('./controllers/authentication');
 
 const APP_PORT = process.env.PORT || 8080;
 
-const PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
-const PLAID_SECRET = envvar.string('PLAID_SECRET');
-const PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
-const PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
+const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
+const PLAID_SECRET = process.env.PLAID_SECRET;
+const PLAID_PUBLIC_KEY = process.env.PLAID_PUBLIC_KEY;
+const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
 
 // Initialize the Plaid client
 const client = new plaid.Client(
@@ -25,19 +24,16 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
-console.log(`test app: ${app}`);
-
 app.use(express.static('public'));
-app.use(cookieParser());
-app.set('view engine', 'ejs');
-
+app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 );
+app.use(cookieParser());
 
-app.use(bodyParser.json());
+app.set('view engine', 'ejs');
 
 app.get('/', authenticationController.isAuthenticated, (req, res) => {
   res.send('Homepage goes here…');
