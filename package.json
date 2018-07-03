@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bash ./scripts/run.sh"
+    "start": "bash ./scripts/run.sh",
+    "create-db": "bash ./scripts/createdb.sh"
   },
   "author": "developers@plaid.com",
   "repository": "https://github.com/plaid/quickstart",
