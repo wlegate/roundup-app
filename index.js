@@ -10,7 +10,8 @@ const cookieParser = require('cookie-parser');
 const plaid = require('plaid');
 const authenticationController = require('./controllers/authentication');
 
-const APP_PORT = envvar.number('APP_PORT');
+const APP_PORT = process.env.PORT || 8080;
+
 const PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
 const PLAID_SECRET = envvar.string('PLAID_SECRET');
 const PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
