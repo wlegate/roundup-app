@@ -2,18 +2,19 @@
 
 require('dotenv').config();
 
-const envvar = require('envvar');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const moment = require('moment');
+const cookieParser = require('cookie-parser');
 const plaid = require('plaid');
+const authenticationController = require('./controllers/authentication');
 
-const APP_PORT = envvar.number('APP_PORT');
-const PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
-const PLAID_SECRET = envvar.string('PLAID_SECRET');
-const PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
-const PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
+const APP_PORT = process.env.PORT || 8080;
+
+const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
+const PLAID_SECRET = process.env.PLAID_SECRET;
+const PLAID_PUBLIC_KEY = process.env.PLAID_PUBLIC_KEY;
+const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
 
 // Initialize the Plaid client
 const client = new plaid.Client(
@@ -23,18 +24,21 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
-console.log(`test app: ${app}`);
-
 app.use(express.static('public'));
-app.set('view engine', 'ejs');
-
+app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 );
+app.use(cookieParser());
 
-app.use(bodyParser.json());
+app.set('view engine', 'ejs');
+app.set('port', APP_PORT);
+
+app.get('/', authenticationController.isAuthenticated, (req, res) => {
+  res.send('Homepage goes here…');
+});
 
 /**
  * Creates db User and Session
@@ -52,7 +56,14 @@ app.use(bodyParser.json());
  * }
  *
  */
-app.post('/register', (req, res) => {});
+app.post(
+  '/register',
+  authenticationController.register,
+  authenticationController.startSession,
+  (req, res) => {
+    res.redirect('/');
+  }
+);
 
 /**
  * Validates login credentials and creates db Session
@@ -88,7 +99,9 @@ app.post('/login', (req, res) => {});
  * ]
  *
  */
-app.get('/accounts', (req, res) => {});
+app.get('/accounts', (req, res) => {
+  res.send('Accounts go here…');
+});
 
 /**
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
@@ -119,7 +132,9 @@ app.get('/accounts', (req, res) => {});
  * ]
  *
  */
-app.get('/transactions', (req, res) => {});
+app.get('/transactions', (req, res) => {
+  res.send('Transactions go here…');
+});
 
 // ADMIN ROUTES
 
