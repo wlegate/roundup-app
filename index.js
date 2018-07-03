@@ -2,50 +2,143 @@
 
 require('dotenv').config();
 
-var envvar = require('envvar');
-var express = require('express');
-var bodyParser = require('body-parser');
-var moment = require('moment');
-var plaid = require('plaid');
+const envvar = require('envvar');
+const express = require('express');
+const app = express();
+const router = express.Router();
+const bodyParser = require('body-parser');
+const moment = require('moment');
+const plaid = require('plaid');
 
-var APP_PORT = envvar.number('APP_PORT', 8000);
-var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
-var PLAID_SECRET = envvar.string('PLAID_SECRET');
-var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
-var PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
-
-// We store the access_token in memory - in production, store it in a secure
-// persistent data store
-var ACCESS_TOKEN = null;
-var PUBLIC_TOKEN = null;
-var ITEM_ID = null;
+const APP_PORT = envvar.number('APP_PORT', 8000);
+const PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID');
+const PLAID_SECRET = envvar.string('PLAID_SECRET');
+const PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY');
+const PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
 
 // Initialize the Plaid client
-var client = new plaid.Client(
+const client = new plaid.Client(
   PLAID_CLIENT_ID,
   PLAID_SECRET,
   PLAID_PUBLIC_KEY,
   plaid.environments[PLAID_ENV]
 );
 
-var app = express();
+console.log(`test app: ${app}`);
+console.log(`test router: ${router}`);
+
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 );
+
 app.use(bodyParser.json());
 
-app.get('/', function(request, response, next) {
+/**
+ * Creates db User and Session
+ *
+ * Request Body:
+ * {
+ *  email: String,
+ *  password: String
+ * }
+ *
+ * Response Body:
+ * {
+ *  session: String or Null,
+ *  error: String or Null
+ * }
+ *
+ */
+router.post('/register', (req, res) => {});
+
+/**
+ * Validates login credentials and creates db Session
+ *
+ * Request Body:
+ * {
+ *  email: String,
+ *  password: String
+ * }
+ *
+ * Response Body:
+ * {
+ *  session: String or Null,
+ *  error: String or Null
+ * }
+ *
+ */
+router.post('/login', (req, res) => {});
+
+/**
+ * Returns a JSON list of their connected accounts
+ *
+ * Response Body:
+ * [
+ *  {
+ *    id: Number
+ *    iso_currency_code: String,
+ *    name: String,
+ *    official_name: String,
+ *    type: String,
+ *    substype: String,
+ *  }, …
+ * ]
+ *
+ */
+router.get('/accounts', (req, res) => {});
+
+/**
+ * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
+ *
+ * Response Body:
+ * [
+ *  {
+ *    id: Number,
+ *    iso_currency_code: String,
+ *    account_id: Number,
+ *    amount: Number,
+ *    categories: Array,
+ *    date: Date,
+ *    location: {
+ *      address: String,
+ *      city: String,
+ *      state: String,
+ *      zip_code: String,
+ *      coordinates: {
+ *        lat: Number,
+ *        lon: Number
+ *      }
+ *    },
+ *    name: String,
+ *    is_pending: Boolean,
+ *    type: String,
+ *  }
+ * ]
+ *
+ */
+router.get('/transactions', (req, res) => {});
+
+// ADMIN ROUTES
+module.exports = { router };
+
+const admin = require('./controllers/admin');
+router.use('/admin', admin);
+
+// LEGACY REFERENCE
+
+router.get('/', function(request, response, next) {
   response.render('index.ejs', {
     PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
     PLAID_ENV: PLAID_ENV
   });
 });
 
-app.post('/get_access_token', function(request, response, next) {
+router.post('/get_access_token', function(request, response, next) {
   PUBLIC_TOKEN = request.body.public_token;
   client.exchangePublicToken(PUBLIC_TOKEN, function(error, tokenResponse) {
     if (error != null) {
@@ -65,7 +158,7 @@ app.post('/get_access_token', function(request, response, next) {
   });
 });
 
-app.get('/accounts', function(request, response, next) {
+router.get('/accounts', function(request, response, next) {
   // Retrieve high-level account information and account and routing numbers
   // for each account associated with the Item.
   client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
@@ -86,7 +179,7 @@ app.get('/accounts', function(request, response, next) {
   });
 });
 
-app.post('/item', function(request, response, next) {
+router.post('/item', function(request, response, next) {
   // Pull the Item - this includes information about available products,
   // billed products, webhook information, and more.
   client.getItem(ACCESS_TOKEN, function(error, itemResponse) {
@@ -118,7 +211,7 @@ app.post('/item', function(request, response, next) {
   });
 });
 
-app.post('/transactions', function(request, response, next) {
+router.post('/transactions', function(request, response, next) {
   // Pull transactions for the Item for the last 30 days
   var startDate = moment()
     .subtract(30, 'days')
