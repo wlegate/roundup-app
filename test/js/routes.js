@@ -9,7 +9,7 @@ const HOST = `http://localhost:${PORT}`;
 describe("Route integration", () => {
   describe("/accounts", () => {
     describe("GET", () => {
-      it("returns an account", done => {
+      xit("returns an account", done => {
         request(HOST)
           .get("/accounts")
           .end((err, result) => {
@@ -21,7 +21,7 @@ describe("Route integration", () => {
   });
   describe("/register", () => {
     describe("POST", () => {
-      it("returns an account", done => {
+      xit("registers an account", done => {
         request(HOST)
           .post("/register")
           .send({
