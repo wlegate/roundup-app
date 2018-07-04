@@ -39,8 +39,7 @@ CREATE TABLE "User"
 "_id" serial NOT NULL,
 "email" varchar NOT NULL UNIQUE,
 "password" varchar NOT NULL,
-"created_at" timestamp
-with time zone NOT NULL,
+"created_at" timestamp NOT NULL DEFAULT NOW(),
 CONSTRAINT User_pk PRIMARY KEY
 ("_id")
 )
@@ -88,10 +87,8 @@ CREATE TABLE "Session"
 (
 "_id" serial NOT NULL,
 "user_id" serial NOT NULL,
-"secret" varchar NOT NULL UNIQUE,
-"created_at" timestamp
-with time zone NOT NULL,
-"device_id" varchar NOT NULL,
+"session" varchar NOT NULL UNIQUE,
+"created_at" timestamp NOT NULL DEFAULT NOW(),
 CONSTRAINT Session_pk PRIMARY KEY
 ("_id")
 )
@@ -110,8 +107,7 @@ CREATE TABLE "Transaction"
 "user_id" serial NOT NULL,
 "amount" money NOT NULL,
 "categories" varchar NOT NULL,
-"date" timestamp
-with time zone NOT NULL,
+"date" timestamp NOT NULL DEFAULT NOW(),
 "location" json NOT NULL,
 "name" varchar NOT NULL,
 "is_pending" BOOLEAN NOT NULL,

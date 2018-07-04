@@ -7,8 +7,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const plaid = require('plaid');
-const authenticationController = require('./controllers/authentication');
 const path = require('path');
+
+// Controllers
+const AccountController = require('./controllers/AccountController');
+const ChargeController = require('./controllers/ChargeController');
+const ItemController = require('./controllers/ItemController');
+const SessionController = require('./controllers/SessionController');
+const TransactionController = require('./controllers/TransactionController');
+const UserController = require('./controllers/UserController');
 
 const APP_PORT = process.env.PORT || 8080;
 
@@ -25,6 +32,8 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
+module.exports = app;
+
 app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(
@@ -37,9 +46,10 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.set('port', APP_PORT);
 
-app.get('/', authenticationController.isAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, '/build/', '/index.html'));
-});
+app.get('/',
+  UserController.authenticateUser,
+  (req, res) => { res.sendFile(path.join(__dirname, '/build/', '/index.html')) }
+);
 
 /**
  * Creates db User and Session
@@ -59,8 +69,8 @@ app.get('/', authenticationController.isAuthenticated, (req, res) => {
  */
 app.post(
   '/register',
-  authenticationController.register,
-  authenticationController.startSession,
+  UserController.createUser,
+  SessionController.startSession,
   (req, res) => {
     res.redirect('/');
   }
@@ -82,7 +92,13 @@ app.post(
  * }
  *
  */
-app.post('/login', (req, res) => {});
+app.post('/login',
+  UserController.authenticateUser,
+  SessionController.startSession,
+  (req, res) => {
+    res.json({ success: true });
+  }
+);
 
 /**
  * Returns a JSON list of their connected accounts
@@ -100,9 +116,14 @@ app.post('/login', (req, res) => {});
  * ]
  *
  */
-app.get('/accounts', (req, res) => {
-  res.send('Accounts go here…');
-});
+
+app.get('/accounts',
+  // TODO: SessionController.hasActiveSession,
+  AccountController.fetchAccounts,
+  (req, res) => {
+    res.send('Accounts go here…');
+  }
+);
 
 /**
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
@@ -133,13 +154,19 @@ app.get('/accounts', (req, res) => {
  * ]
  *
  */
-app.get('/transactions', (req, res) => {
-  res.send('Transactions go here…');
-});
+app.get('/transactions',
+  // TODO: SessionController.hasActiveSession,
+  TransactionController.fetchTransactions,
+  (req, res) => {
+    res.send('Transactions go here…');
+  }
+);
+
+
 
 // ADMIN ROUTES
 
-const admin = require('./controllers/admin');
+const admin = require('./routes/admin');
 app.use('/admin', admin);
 
 // LEGACY REFERENCE
@@ -253,8 +280,6 @@ app.use('/admin', admin);
 //   );
 // });
 
-var server = app.listen(APP_PORT, function() {
+var server = app.listen(APP_PORT, function () {
   console.log('plaid-walkthrough server listening on port ' + APP_PORT);
 });
-
-module.exports = app;
