@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const plaid = require('plaid');
 const authenticationController = require('./controllers/authentication');
+const path = require('path');
 
 const APP_PORT = process.env.PORT || 8080;
 
@@ -24,7 +25,7 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
-app.use(express.static('public'));
+app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -37,7 +38,7 @@ app.set('view engine', 'ejs');
 app.set('port', APP_PORT);
 
 app.get('/', authenticationController.isAuthenticated, (req, res) => {
-  res.send('Homepage goes here…');
+  res.sendFile(path.join(__dirname, '/build/', '/index.html'));
 });
 
 /**
