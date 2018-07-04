@@ -17,15 +17,21 @@ const startSession = (req, res, next) => {
   });
 };
 
-// TODO: move the cookies check here
 const hasActiveSession = (req, res, next) => {
-  console.log(req.cookies.session);
-  if (req.cookies.session) {
-    // check if session is still valid
-    // if valid: next()
-    // else: redirect to login
+  const session = req.cookies.session;
+  if (session) {
+    const query = `SELECT user_id FROM "Session" WHERE session='${session}'`;
+    client.query(query, (err, response) => {
+      if (err) {
+        res.redirect('/');
+      } else {
+        let { user_id } = response.rows[0];
+        res.locals.user_id = user_id;
+        next();
+      }
+    });
   } else {
-    // redirect to login
+    res.redirect('/');
   }
   next();
 };

@@ -118,7 +118,7 @@ app.post('/login',
  */
 
 app.get('/accounts',
-  // TODO: SessionController.hasActiveSession,
+  SessionController.hasActiveSession,
   AccountController.fetchAccounts,
   (req, res) => {
     res.send('Accounts go here…');
@@ -155,7 +155,7 @@ app.get('/accounts',
  *
  */
 app.get('/transactions',
-  // TODO: SessionController.hasActiveSession,
+  SessionController.hasActiveSession,
   TransactionController.fetchTransactions,
   (req, res) => {
     res.send('Transactions go here…');
