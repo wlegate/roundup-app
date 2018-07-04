@@ -1,18 +1,47 @@
-import React, { Component } from 'react';
-import '../styles.scss';
+import React, { Component } from "react";
+import Route from "react-router-dom";
+import Header from "./Header.jsx";
+import Main from "./Main.jsx";
+//conditional components
+import Accounts from "./loggedIn_landing/Accounts.jsx";
+import LoggedInHeader from "./loggedIn_landing/Header.jsx";
+import Transactions from "./loggedIn_landing/Transactions.jsx";
+import Weekly from "./loggedIn_landing/Weekly.jsx";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: "Wilbur",
+      passValue: "",
+      isLoggedIn: true
+    };
+
+    updateInputValue: evt => {
+      this.setState({
+        inputValue: evt.target.value
+      });
+    };
   }
 
   render() {
-    return (
-      <div id="app-container">
-        <p>Hello</p>
-      </div>
-    );
+    if (this.state.isLoggedIn === true) {
+      return (
+        <div id="app-container">
+          <LoggedInHeader />
+          <Transactions />
+          <Accounts />
+          <Weekly />
+        </div>
+      );
+    } else {
+      return (
+        <div id="app-container">
+          <Header currentUser={this.state.currentUser} />
+          <Main inputValue={this.state.currentValue} />
+        </div>
+      );
+    }
   }
 }
 
