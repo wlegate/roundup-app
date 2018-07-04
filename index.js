@@ -32,6 +32,8 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
+module.exports = app;
+
 app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(
@@ -46,7 +48,7 @@ app.set('port', APP_PORT);
 
 app.get('/',
   UserController.authenticateUser,
-  (req, res) => {res.sendFile(path.join(__dirname, '/build/', '/index.html'))}
+  (req, res) => { res.sendFile(path.join(__dirname, '/build/', '/index.html')) }
 );
 
 /**
@@ -91,9 +93,12 @@ app.post(
  *
  */
 app.post('/login',
-  UserController,authenticateUser,
+  UserController.authenticateUser,
   SessionController.startSession,
-  (req, res) => {});
+  (req, res) => {
+    res.json({ success: true });
+  }
+);
 
 /**
  * Returns a JSON list of their connected accounts
@@ -111,9 +116,14 @@ app.post('/login',
  * ]
  *
  */
-app.get('/accounts', (req, res) => {
-  res.send('Accounts go here…');
-});
+
+app.get('/accounts',
+  // TODO: SessionController.hasActiveSession,
+  AccountController.fetchAccounts,
+  (req, res) => {
+    res.send('Accounts go here…');
+  }
+);
 
 /**
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
@@ -144,9 +154,15 @@ app.get('/accounts', (req, res) => {
  * ]
  *
  */
-app.get('/transactions', (req, res) => {
-  res.send('Transactions go here…');
-});
+app.get('/transactions',
+  // TODO: SessionController.hasActiveSession,
+  TransactionController.fetchTransactions,
+  (req, res) => {
+    res.send('Transactions go here…');
+  }
+);
+
+
 
 // ADMIN ROUTES
 
@@ -264,8 +280,6 @@ app.use('/admin', admin);
 //   );
 // });
 
-var server = app.listen(APP_PORT, function() {
+var server = app.listen(APP_PORT, function () {
   console.log('plaid-walkthrough server listening on port ' + APP_PORT);
 });
-
-module.exports = app;

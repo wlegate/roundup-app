@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "export NODE_ENV=test && mocha --timeout 8000 test/",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "build": "webpack -p --watch",
     "create-db": "createdb roundup-app-db && node scripts/create-db.js",
     "heroku-postbuild": "npm install"
@@ -14,22 +14,25 @@
   "repository": "https://github.com/wlegate/roundup-app",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "1.15.x",
+    "cookie-parser": "^1.4.3",
     "css-loader": "^0.28.11",
+    "dotenv": "^6.0.0",
+    "ejs": "2.5.x",
+    "express": "4.13.x",
+    "moment": "2.19.x",
     "node-sass": "^4.9.0",
+    "nodemon": "^1.17.5",
+    "pg": "^6.1.0",
+    "plaid": "2.6.x",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
-    "webpack": "^4.8.3",
-    "body-parser": "1.15.x",
-    "cookie-parser": "^1.4.3",
-    "dotenv": "^6.0.0",
-    "ejs": "2.5.x",
-    "express": "4.13.x",
-    "moment": "2.19.x",
-    "pg": "^6.1.0",
-    "plaid": "2.6.x"
+    "uuid": "^3.3.2",
+    "webpack": "^4.8.3"
   },
   "devDependencies": {
     "expect": "^23.2.0",
