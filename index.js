@@ -48,7 +48,9 @@ app.set('port', APP_PORT);
 
 app.get('/',
   UserController.authenticateUser,
-  (req, res) => { res.sendFile(path.join(__dirname, '/build/', '/index.html')) }
+  (req, res) => {
+    res.sendFile(path.join(__dirname, '/build/', 'index.html'))
+  }
 );
 
 /**

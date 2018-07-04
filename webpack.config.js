@@ -8,12 +8,11 @@ const config = {
   },
   module: {
     rules: [
-      { test: /\.js$/, use: 'babel-loader', include: /public/ },
-      { test: /\.jsx$/, use: 'babel-loader', include: /public/ },
+      { test: /\.js$/, use: 'babel-loader' },
+      { test: /\.jsx$/, use: 'babel-loader' },
       {
         test: /\.(scss|css)$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: /public/,
       },
       {
         test: /\.(png|jp(e*)g|svg|gif)$/,
