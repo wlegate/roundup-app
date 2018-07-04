@@ -1,7 +1,3 @@
-const register = (req, res, next) => {};
-
-const login = (req, res, next) => {};
-
 const startSession = (req, res, next) => {};
 
 const isAuthenticated = (req, res, next) => {
@@ -15,4 +11,4 @@ const isAuthenticated = (req, res, next) => {
   next();
 };
 
-module.exports = { register, login, startSession, isAuthenticated };
+module.exports = { startSession, isAuthenticated };
