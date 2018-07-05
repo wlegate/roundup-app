@@ -1,52 +1,45 @@
-import React, { Component } from 'react';
-import Route from 'react-router-dom';
-import Header from './Header.jsx';
-import Main from './Main.jsx';
+import React, { Component } from "react";
+
+import Header from "./Header.jsx";
+import Accounts from "./Accounts.jsx";
+import Transactions from "./Transactions.jsx";
+import Weekly from "./Weekly.jsx";
+import Signup from './Signup.jsx';
+import Login from './Login.jsx';
+import PlaidClient from './../plaid-client';
+
 import axios from 'axios';
 
-// conditional components
-import Accounts from './loggedIn_landing/Accounts.jsx';
-import Transactions from './loggedIn_landing/Transactions.jsx';
-import Weekly from './loggedIn_landing/Weekly.jsx';
-import PlaidClient from './../plaid-client';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: 'amaze',
+      currentUser: "",
       transactions: [],
       accounts: []
     };
-
-    this.plaidLink = this.plaidLink.bind(this);
-
-    updateInputValue: e => {
-      this.setState({
-        inputValue: e.target.value
-      });
-    };
   }
 
-  handleLogin(email, password) {
-    axios
-      .post('/login', {
-        email,
-        password
-      })
-      .then()
-      .catch();
+  handleLogin = (e) => {
+    e.preventDefault();
+    axios.post('/login', {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+    }).then((response) => {
+      if (response.data.session) this.setState({ currentUser: true });
+      else console.log('Unable to login.');
+    }).catch((err) => console.log(err));
   }
 
   handleRefreshTransactions = () => {
-    axios
-      .get('/transactions')
-      .then(response => {
-        if (response) this.setState({ transactions: response.data });
-        else console.log('No transactions found.');
-      })
-      .catch(err => console.log(err));
-  };
+    axios.get('/transactions')
+    .then((response) => {
+      if (response.data) this.setState({ transactions: response.data });
+      else console.log('No transactions found.');
+    })
+    .catch((err) => console.log(err));
+  }
 
   plaidLink = () => {
     PlaidClient.open();
@@ -71,19 +64,21 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Transactions
-            refreshTransactions={this.handleRefreshTransactions}
-            transactions={this.state.transactions}
-          />
-          <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
-          <Weekly />
+          <div id="user-landing">
+          <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
+          <Accounts accounts={this.state.accounts} onLink={this.plaidLink}/>
+          {/* <Weekly /> */}
+          </div>
         </div>
       );
     } else {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Main inputValue={this.state.currentValue} />
+          <h3>Please Login or Sign Up below.</h3>
+          <Login handleLogin={this.handleLogin}/>
+          <br/>
+          <Signup />
         </div>
       );
     }

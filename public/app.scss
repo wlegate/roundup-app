@@ -7,7 +7,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 auto;
   padding: 10px;
-  box-shadow: 10px 15px 39px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
 
@@ -35,6 +34,7 @@ body {
   font-size: 14px;
   border-radius: 4px;
   width: 75%;
+  margin: auto;
   margin-bottom: 5px;
 }
 
@@ -142,8 +142,7 @@ body {
   padding: 3px;
 }
 
-.transaction-btn {
-  background-color: #1a476a;
+#transaction-btn {
   background-image: -webkit-linear-gradient(top, #29618e, #164a74);
   background-image: linear-gradient(to bottom, #29618e, #164a74);
   border-color: #1a476a;
@@ -157,6 +156,17 @@ body {
   padding: 10px 30px;
   font-size: 18px;
   border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: all ease 0.2s;
+  margin-bottom: 10px;
+}
+#transaction-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 1px 5px 0px black;
+}
+#transaction-btn:active {
+  transform: translateY(2px);
 }
 
 .logo-img {
@@ -173,12 +183,8 @@ body {
 }
 
 .transaction-container {
-  float: left;
-  position: absolute;
-  width: 33%;
+  width: 66%;
   display: inline-block;
-  border: 1px solid black;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .transaction {
@@ -196,8 +202,9 @@ body {
   padding: 10px 30px;
   font-size: 14px;
   border-radius: 4px;
-  width: 75%;
+  margin: auto;
   margin-bottom: 5px;
+  width: 66%;
 }
 
 .weekly-container {
@@ -208,8 +215,18 @@ body {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+// #user-landing {
+//   display: flex;
+//   justify-content: center;
+//   align-content: center;
+// }
+
 @media screen and (max-width: 600px) {
   .column {
+    width: 100%;
+  }
+  .transaction-container {
+    display: inline-block;
     width: 100%;
   }
 }
