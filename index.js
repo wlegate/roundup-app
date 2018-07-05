@@ -148,7 +148,6 @@ app.get('/accounts',
  *      }
  *    },
  *    name: String,
- *    is_pending: Boolean,
  *    type: String,
  *  }
  * ]
@@ -168,6 +167,11 @@ app.get('/transactions',
 
 const admin = require('./routes/admin');
 app.use('/admin', admin);
+
+// app.get('*', function(request, response) {
+//   response.sendFile(path.resolve(__dirname, './build', 'index.html'));
+// });
+
 
 // LEGACY REFERENCE
 
