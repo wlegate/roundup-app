@@ -44,7 +44,7 @@ class App extends Component {
         // Optional, called when Link loads
       },
       onSuccess: (public_token, metadata) => {
-        console.log(`onSuccess:\n\npublic_token:\n${JSON.stringify(public_token, null, 2)}\n\nmetadata:\n${JSON.stringify(metadata, null, 2)}`);
+        console.log(`onSuccess:\n\npublic_token:\n${JSON.stringify(public_token, null, 2)}`);
 
         // Send the public_token to your app server.
         // The metadata object contains info about the institution the
@@ -55,7 +55,7 @@ class App extends Component {
         });
       },
       onExit: (err, metadata) => {
-        console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}\n\nmetadata:\n${JSON.stringify(metadata, null, 2)}`);
+        console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}`);
         // The user exited the Link flow.
         if (err != null) {
           // The user encountered a Plaid API error prior to exiting.
@@ -65,7 +65,7 @@ class App extends Component {
         // Storing this information can be helpful for support.
       },
       onEvent: (eventName, metadata) => {
-        console.log(`onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}\n\nmetadata:\n${JSON.stringify(metadata, null, 2)}`);
+        console.log(`onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`);
         // Optionally capture Link flow events, streamed through
         // this callback as your users connect an Item to Plaid.
         // For example:
