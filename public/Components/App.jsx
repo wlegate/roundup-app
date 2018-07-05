@@ -1,26 +1,21 @@
 import React, { Component } from "react";
-import Route from "react-router-dom";
+
 import Header from "./Header.jsx";
-import Main from "./Main.jsx";
-//conditional components
-import Accounts from "./loggedIn_landing/Accounts.jsx";
-import Transactions from "./loggedIn_landing/Transactions.jsx";
-import Weekly from "./loggedIn_landing/Weekly.jsx";
+import Accounts from "./Accounts.jsx";
+import Transactions from "./Transactions.jsx";
+import Weekly from "./Weekly.jsx";
+import Signup from './Signup.jsx';
+import Login from './Login.jsx';
+
 import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: "amaze",
+      currentUser: "",
       transactions: [],
       accounts: [],
-    };
-
-    updateInputValue: e => {
-      this.setState({
-        inputValue: e.target.value
-      });
     };
   }
 
@@ -82,17 +77,22 @@ class App extends Component {
     handler.open();
   }
 
-  handleLogin(email, password) {
+  handleLogin = (e) => {
+    e.preventDefault();
     axios.post('/login', {
-      email,
-      password,
-    }).then().catch();
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+    }).then((response) => {
+      console.log(response.data);
+      if (response.data.session) this.setState({ currentUser: true });
+      else console.log('Unable to login.');
+    }).catch((err) => console.log(err));
   }
 
   handleRefreshTransactions = () => {
     axios.get('/transactions')
     .then((response) => {
-      if (response) this.setState({ transactions: response.data });
+      if (response.data) this.setState({ transactions: response.data });
       else console.log('No transactions found.');
     })
     .catch((err) => console.log(err));
@@ -104,7 +104,7 @@ class App extends Component {
 
       axios.get('/accounts')
         .then((response) => {
-          if (response) this.setState({ accounts: response.data });
+          if (response.data) this.setState({ accounts: response.data });
           else console.log('No accounts found.');
         }).catch((err) => console.log(err));
     }
@@ -115,16 +115,21 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
+          <div id="user-landing">
           <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
           <Accounts accounts={this.state.accounts} onLink={this.plaidLink}/>
-          <Weekly />
+          {/* <Weekly /> */}
+          </div>
         </div>
       );
     } else {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Main inputValue={this.state.currentValue} />
+          <h3>Please Login or Sign Up below.</h3>
+          <Login handleLogin={this.handleLogin}/>
+          <br/>
+          <Signup />
         </div>
       );
     }

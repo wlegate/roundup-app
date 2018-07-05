@@ -13,7 +13,7 @@ const Transactions = props => {
     );
   });
   return (
-    <div className="transaction-container" class="column">
+    <div className="transaction-container">
       <h3>Recent Transactions</h3>
       <button id="transaction-btn" onClick={props.refreshTransactions} >Refresh Transactions</button>
       {transactions}
