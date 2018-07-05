@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Component } from "react";
 
 import Header from "./Header.jsx";
@@ -8,12 +7,6 @@ import Weekly from "./Weekly.jsx";
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 
-=======
-import React, { Component } from 'react';
-import Route from 'react-router-dom';
-import Header from './Header.jsx';
-import Main from './Main.jsx';
->>>>>>> a77b003c89af911bbb3d78c3c3105a9f696a7e6c
 import axios from 'axios';
 
 // conditional components
@@ -26,15 +19,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
       currentUser: "",
-=======
-      currentUser: 'amaze',
->>>>>>> a77b003c89af911bbb3d78c3c3105a9f696a7e6c
       transactions: [],
       accounts: []
     };
-<<<<<<< HEAD
   }
 
   plaidLink() {
@@ -115,56 +103,15 @@ class App extends Component {
     })
     .catch((err) => console.log(err));
   }
-=======
-
-    this.plaidLink = this.plaidLink.bind(this);
-
-    updateInputValue: e => {
-      this.setState({
-        inputValue: e.target.value
-      });
-    };
-  }
-
-  handleLogin(email, password) {
-    axios
-      .post('/login', {
-        email,
-        password
-      })
-      .then()
-      .catch();
-  }
-
-  handleRefreshTransactions = () => {
-    axios
-      .get('/transactions')
-      .then(response => {
-        if (response) this.setState({ transactions: response.data });
-        else console.log('No transactions found.');
-      })
-      .catch(err => console.log(err));
-  };
-
-  plaidLink = () => {
-    PlaidClient.open();
-  };
->>>>>>> a77b003c89af911bbb3d78c3c3105a9f696a7e6c
 
   componentDidMount() {
     if (this.state.currentUser) {
       this.handleRefreshTransactions();
 
-<<<<<<< HEAD
-      axios.get('/accounts')
-        .then((response) => {
-          if (response.data) this.setState({ accounts: response.data });
-=======
       axios
         .get('/accounts')
         .then(response => {
           if (response) this.setState({ accounts: response.data });
->>>>>>> a77b003c89af911bbb3d78c3c3105a9f696a7e6c
           else console.log('No accounts found.');
         })
         .catch(err => console.log(err));
@@ -176,20 +123,11 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-<<<<<<< HEAD
           <div id="user-landing">
           <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
           <Accounts accounts={this.state.accounts} onLink={this.plaidLink}/>
           {/* <Weekly /> */}
           </div>
-=======
-          <Transactions
-            refreshTransactions={this.handleRefreshTransactions}
-            transactions={this.state.transactions}
-          />
-          <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
-          <Weekly />
->>>>>>> a77b003c89af911bbb3d78c3c3105a9f696a7e6c
         </div>
       );
     } else {
