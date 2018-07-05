@@ -12,7 +12,7 @@ const startSession = (req, res, next) => {
       const { _id, session } = response.rows[0];
       const obj = { id: _id, session };
       res.cookie('session', session);
-      next();
+      return res.send({ session });
     }
   });
 };

@@ -32,7 +32,7 @@ const client = new plaid.Client(
   plaid.environments[PLAID_ENV]
 );
 
-module.exports = app;
+module.exports = { app, client };
 
 app.use(express.static('build'));
 app.use(bodyParser.json());

@@ -26,7 +26,7 @@ class App extends Component {
 
   plaidLink() {
     console.log('plaidLink()');
-    
+
     const handler = Plaid.create({
       // TODO: Update from client name from constants file
       clientName: 'Plaid Demo',
@@ -50,7 +50,7 @@ class App extends Component {
         // The metadata object contains info about the institution the
         // user selected and the account ID, if the Account Select view
         // is enabled.
-        $.post('/get_access_token', {
+        $.post('/admin/get_access_token', {
           public_token: public_token,
         });
       },
@@ -91,11 +91,11 @@ class App extends Component {
 
   handleRefreshTransactions = () => {
     axios.get('/transactions')
-    .then((response) => {
-      if (response) this.setState({ transactions: response.data });
-      else console.log('No transactions found.');
-    })
-    .catch((err) => console.log(err));
+      .then((response) => {
+        if (response) this.setState({ transactions: response.data });
+        else console.log('No transactions found.');
+      })
+      .catch((err) => console.log(err));
   }
 
   componentDidMount() {
@@ -115,8 +115,8 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
-          <Accounts accounts={this.state.accounts} onLink={this.plaidLink}/>
+          <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions} />
+          <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
           <Weekly />
         </div>
       );
