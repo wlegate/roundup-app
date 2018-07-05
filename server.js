@@ -285,6 +285,13 @@ app.use('/admin', admin);
 //     }
 //   );
 // });
+app.get(
+  '/cookie',
+  SessionController.hasActiveSession,
+  (req, res) => {
+    res.json({ success: true });
+  }
+);
 
 var server = app.listen(APP_PORT, function () {
   console.log('plaid-walkthrough server listening on port ' + APP_PORT);

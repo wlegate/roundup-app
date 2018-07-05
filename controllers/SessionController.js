@@ -26,10 +26,12 @@ const hasActiveSession = (req, res, next) => {
       if (err) {
         res.redirect('/');
       } else {
-        let { user_id } = response.rows[0];
-        res.locals.user_id = user_id;
-        console.log('res.locals.user_id = ', res.locals.user_id);
-        next();
+        if (response.rows[0]) {
+          let { user_id } = response.rows[0];
+          res.locals.user_id = user_id;
+          console.log('res.locals.user_id = ', res.locals.user_id);
+          next();
+        }
       }
     });
   } else {
