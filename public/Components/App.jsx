@@ -15,7 +15,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: "",
+      // TODO: persistent authentication
+      currentUser: "Amaze",
       transactions: [],
       accounts: []
     };
@@ -34,11 +35,11 @@ class App extends Component {
 
   handleRefreshTransactions = () => {
     axios.get('/transactions')
-    .then((response) => {
-      if (response.data) this.setState({ transactions: response.data });
-      else console.log('No transactions found.');
-    })
-    .catch((err) => console.log(err));
+      .then((response) => {
+        if (response.data) this.setState({ transactions: response.data });
+        else console.log('No transactions found.');
+      })
+      .catch((err) => console.log(err));
   }
 
   plaidLink = () => {
@@ -65,9 +66,9 @@ class App extends Component {
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
           <div id="user-landing">
-          <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
-          <Accounts accounts={this.state.accounts} onLink={this.plaidLink}/>
-          {/* <Weekly /> */}
+            <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions} />
+            <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
+            {/* <Weekly /> */}
           </div>
         </div>
       );
@@ -76,8 +77,8 @@ class App extends Component {
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
           <h3>Please Login or Sign Up below.</h3>
-          <Login handleLogin={this.handleLogin}/>
-          <br/>
+          <Login handleLogin={this.handleLogin} />
+          <br />
           <Signup />
         </div>
       );
