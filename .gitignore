@@ -2,7 +2,8 @@
 logs
 *.log
 npm-debug.log*
-build/*
+build/bundle.js
+package-lock.json
 
 # Runtime data
 pids
