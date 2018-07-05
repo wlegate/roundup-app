@@ -8,9 +8,9 @@ const Login = () => (
     <form>
       <input type="text" placeholder="email" />
       <input type="password" placeholder="password" />
-      <button className="button" id="login-button"> login </button>
+      <button className="button" id="login-button">Login</button>
     </form>
-    <Link to="/signup" className="btn" id="signup-btn">sign up</Link>
+    <Link to="/signup" className="btn" id="signup-btn">Sign Up</Link>
   </div>
 );
 
