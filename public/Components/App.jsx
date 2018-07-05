@@ -11,7 +11,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: "Wilbur"
+      currentUser: "Wilbur",
+      // placeholder transactions, clear the array below when ready
+      transactions: [{ name: 'Pizza', date: '1/1/1991', amount: '15'}, {}],
     };
 
     updateInputValue: e => {
@@ -26,7 +28,7 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Transactions />
+          <Transactions transactions={this.state.transactions}/>
           <Accounts />
           <Weekly />
         </div>
