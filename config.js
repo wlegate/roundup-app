@@ -7,6 +7,11 @@ module.exports = {
     WEBHOOK_URI: 'https://legate-request-bin.herokuapp.com/1agjr801'
   },
   ROUTES: {
+    CLIENT: {
+      LOGIN: '/login',
+      TRANSACTIONS: '/transactions',
+      ACCOUNTS: '/accounts'
+    },
     ADMIN: {
       GET_ACCESS_TOKEN: '/admin/get_access_token'
     }

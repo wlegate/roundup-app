@@ -6,8 +6,16 @@ import Transactions from './Transactions.jsx';
 import Weekly from './Weekly.jsx';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
+
+import { ROUTES } from './../../config';
+
+/**
+ * The Plaid Link client-side client
+ * WARNING: This is different than the Plaid server-side client
+ */
 import plaidClientHandler from './../plaid-client-handler';
 
+// axios is a promise based HTTP client for the browser and node.js
 import axios from 'axios';
 
 class App extends Component {
@@ -25,7 +33,7 @@ class App extends Component {
     /**
      * we can't pass in plaidClientHandler.open directly as props because
      * React adds params which break Plaid from functioning properly…
-     * 
+     *
      * There may be a better way to do this though?
      */
     plaidClientHandler.open();
@@ -34,7 +42,7 @@ class App extends Component {
   handleLogin = e => {
     e.preventDefault();
     axios
-      .post('/login', {
+      .post(ROUTES.CLIENT.LOGIN, {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value
       })
@@ -47,7 +55,7 @@ class App extends Component {
 
   handleRefreshTransactions = () => {
     axios
-      .get('/transactions')
+      .get(ROUTES.CLIENT.TRANSACTIONS)
       .then(response => {
         if (response.data) this.setState({ transactions: response.data });
         else console.log('No transactions found.');
@@ -60,7 +68,7 @@ class App extends Component {
       this.handleRefreshTransactions();
 
       axios
-        .get('/accounts')
+        .get(ROUTES.CLIENT.ACCOUNTS)
         .then(response => {
           if (response) this.setState({ accounts: response.data });
           else console.log('No accounts found.');
