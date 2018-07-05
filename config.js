@@ -11,6 +11,7 @@ module.exports = {
   ROUTES: {
     CLIENT: {
       LOGIN: '/login',
+      SIGNUP: '/register',
       TRANSACTIONS: '/transactions',
       ACCOUNTS: '/accounts'
     },

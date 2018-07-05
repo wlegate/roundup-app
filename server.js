@@ -83,6 +83,14 @@ app.post(
   }
 );
 
+app.get(
+  '/cookie',
+  SessionController.hasActiveSession,
+  (req, res) => {
+    res.json({ success: true });
+  }
+);
+
 /**
  * POST /login
  *

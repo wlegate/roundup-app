@@ -2,6 +2,7 @@ const client = require('./../dbclient');
 const uuid = require('uuid/v1');
 
 const startSession = (req, res, next) => {
+  console.log('startSession');
   const user = res.locals.user;
   const query =
     'INSERT INTO "Session" (user_id, session) VALUES ($1, $2) RETURNING *;';

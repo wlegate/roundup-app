@@ -27,4 +27,17 @@ const getItemDetails = (req, res, next) => {
   });
 }
 
-module.exports = { getAccessTokenAndItemID, getItemDetails };
+const getTransactions = (req, res, next) => {
+  let access_token = 'access-sandbox-c619a4eb-af14-4a94-970c-1ee949969cf9';
+  client.getTransactions(access_token, '2017-01-01', '2017-12-31', { count: 10, offset: 0 }, function (error, response) {
+    if (error != null) {
+      var msg = 'Unable to pull accounts from Plaid API.';
+      console.log(msg + '\n' + error);
+    }
+    res.locals.transactions = response.transactions;
+    console.log(response.transactions);
+    next();
+  });
+}
+
+module.exports = { getAccessTokenAndItemID, getItemDetails, getTransactions };
