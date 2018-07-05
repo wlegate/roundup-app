@@ -1,10 +1,12 @@
+const CONFIG = require('./../config');
+
 const handler = Plaid.create({
   // TODO: Update from client name from constants file
-  clientName: 'Plaid Demo',
+  clientName: CONFIG.APP_NAME,
   // TODO: Update based on ENV variable
   env: 'sandbox',
   // TODO: Use value from constants file or ENV variable instead of hardcoded key
-  key: 'fc0c3b87ad657003cfedb41be91409',
+  key: CONFIG.PLAID.PUBLIC_KEY,
   // TODO: Is this the only product we need?
   product: ['transactions'],
   // Webhook for transaction and error updates…
@@ -15,12 +17,11 @@ const handler = Plaid.create({
   },
   onSuccess: (public_token, metadata) => {
     // exchange the temporary Plaid public token for an access token
-    $.post('/admin/get_access_token', {
+    $.post(CONFIG.ROUTES.ADMIN.GET_ACCESS_TOKEN, {
       public_token: public_token
     });
   },
   onExit: (err, metadata) => {
-    console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}`);
     // The user exited the Link flow.
     if (err != null) {
       // The user encountered a Plaid API error prior to exiting.
@@ -30,9 +31,7 @@ const handler = Plaid.create({
     // Storing this information can be helpful for support.
   },
   onEvent: (eventName, metadata) => {
-    console.log(
-      `onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`
-    );
+    console.log(`event:${eventName}`);
     // Optionally capture Link flow events, streamed through
     // this callback as your users connect an Item to Plaid.
     // For example:

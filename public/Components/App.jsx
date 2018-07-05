@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import Route from 'react-router-dom';
 import Header from './Header.jsx';
 import Main from './Main.jsx';
-//conditional components
+import axios from 'axios';
+
+// conditional components
 import Accounts from './loggedIn_landing/Accounts.jsx';
 import Transactions from './loggedIn_landing/Transactions.jsx';
 import Weekly from './loggedIn_landing/Weekly.jsx';
-import axios from 'axios';
 import PlaidClient from './../plaid-client';
 
 class App extends Component {

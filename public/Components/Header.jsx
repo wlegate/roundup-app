@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
+import CONFIG from './../../config';
 
 const Header = props => {
-  let welcomeBanner = [];
-  let headerContainerClass = "header-container";
-  let logoImageClass = "logo-img";
+  const welcomeBanner = [];
+  let headerContainerClass = 'header-container';
+  let logoImageClass = 'logo-img';
   if (props.currentUser) {
     welcomeBanner.push(<h1>Welcome {props.currentUser}</h1>);
-    headerContainerClass = "header-container-logged-in";
-    logoImageClass = "logo-img-logged-in";
+    headerContainerClass = 'header-container-logged-in';
+    logoImageClass = 'logo-img-logged-in';
   } else {
-    welcomeBanner.push(<h1>Welcome to Pennies for Progress</h1>);
+    welcomeBanner.push(<h1>{`Welcome to ${CONFIG.APP_NAME}!`}</h1>);
   }
   return (
     <div className={headerContainerClass}>
