@@ -59,6 +59,10 @@ body {
   font-size: 14px;
   border-radius: 4px;
   width: 75%;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  position: relative;
+  left: 73px;
 }
 
 .btn {
@@ -208,8 +212,12 @@ body {
 }
 
 .weekly-container {
-  right: 0px;
-  width: 33%;
+  width: auto;
+  right: 25px;
+  float: right;
+  bottom: 80%;
+  // width: 33%;
+  position: fixed;
   display: inline-block;
   border: 1px solid black;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);

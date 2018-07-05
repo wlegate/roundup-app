@@ -111,6 +111,18 @@ app.post(
   }
 );
 
+/*
+Logs a user out and ends their session
+*/
+
+// app.post(
+//   '/logout',
+//   SessionController.endSession,
+//   (req, res) => {
+//     res.json({ success: true });
+//   }
+// );
+
 /**
  * Returns a JSON list of their connected accounts
  *

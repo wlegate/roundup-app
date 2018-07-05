@@ -108,6 +108,11 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handleLogout = e => {
+    e.preventDefault();
+    this.setState({ currentUser: false });
+  }
+
   handleSignup = e => {
     e.preventDefault();
     console.log('handleSignup');
@@ -143,6 +148,17 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  getContributions = () => {
+    axios
+      .get(/*will's route*/)
+      .then(response => {
+        if (response) {let totals = response.data}
+        else console.log('something went wrong');
+        return totals;
+      })
+      .catch(err => console.log(err));
+  }
+
   componentDidMount() {
     if (!this.state.currentUser) {
       axios.get('/cookie').then(response => {
@@ -157,17 +173,19 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <div id="user-landing">
+          <div id="user-landing fadein">
             <Transactions
               refreshTransactions={this.handleRefreshTransactions}
               transactions={this.state.transactions}
             />
             <Accounts
               getAccounts={this.getAccounts}
+              logout={this.handleLogout}
               accounts={this.state.accounts}
               onLink={this.plaidLink}
+              getContributions={this.getContributions}
             />
-            {/* <Weekly /> */}
+            {/*<Weekly />*/}
           </div>
         </div>
       );

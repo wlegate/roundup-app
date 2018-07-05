@@ -18,6 +18,11 @@ const startSession = (req, res, next) => {
   });
 };
 
+// const endSession = (req, res, next) => {
+//   console.log('endSession');
+
+// }
+
 const hasActiveSession = (req, res, next) => {
   const session = req.cookies.session;
   console.log('hasActiveSession: ', session);

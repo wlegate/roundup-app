@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Account from './Account.jsx';
+import Weekly from './Weekly.jsx';
 
 class Accounts extends Component {
   constructor(props) {
@@ -24,7 +25,11 @@ class Accounts extends Component {
         <button id="link-btn" onClick={this.props.onLink}>
           Link Account
         </button>
+        <button id="logout-btn" onClick={this.props.logout}>
+          Logout
+        </button>
         {accounts}
+        <Weekly getContributions={this.props.getContributions}/>
       </div>
     );
   }
