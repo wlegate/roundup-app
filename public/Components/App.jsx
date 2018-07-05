@@ -1,22 +1,29 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Header from "./Header.jsx";
-import Accounts from "./Accounts.jsx";
-import Transactions from "./Transactions.jsx";
-import Weekly from "./Weekly.jsx";
+import Header from './Header.jsx';
+import Accounts from './Accounts.jsx';
+import Transactions from './Transactions.jsx';
+import Weekly from './Weekly.jsx';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
-// import PlaidClient from './../plaid-client';
 
+import { ROUTES } from './../../config';
+
+/**
+ * The Plaid Link client-side client
+ * WARNING: This is different than the Plaid server-side client
+ */
+import plaidClientHandler from './../plaid-client-handler';
+
+// axios is a promise based HTTP client for the browser and node.js
 import axios from 'axios';
-
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // TODO: persistent authentication
-      currentUser: "",
+      currentUser: 'Amaze',
       transactions: [],
       accounts: []
     };
@@ -80,25 +87,29 @@ class App extends Component {
     handler.open();
   }
 
-  handleLogin = (e) => {
+  handleLogin = e => {
     e.preventDefault();
-    axios.post('/login', {
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-    }).then((response) => {
-      if (response.data.session) this.setState({ currentUser: true });
-      else console.log('Unable to login.');
-    }).catch((err) => console.log(err));
-  }
+    axios
+      .post(ROUTES.CLIENT.LOGIN, {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      })
+      .then(response => {
+        if (response.data.session) this.setState({ currentUser: true });
+        else console.log('Unable to login.');
+      })
+      .catch(err => console.log(err));
+  };
 
   handleRefreshTransactions = () => {
-    axios.get('/transactions')
-      .then((response) => {
+    axios
+      .get(ROUTES.CLIENT.TRANSACTIONS)
+      .then(response => {
         if (response.data) this.setState({ transactions: response.data });
         else console.log('No transactions found.');
       })
-      .catch((err) => console.log(err));
-  }
+      .catch(err => console.log(err));
+  };
 
   getAccounts = () => {
     axios
