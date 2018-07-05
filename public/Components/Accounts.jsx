@@ -1,23 +1,33 @@
-import React, { Component } from "react";
-import Account from "./Account.jsx";
+import React, { Component } from 'react';
+import Account from './Account.jsx';
 
-const Accounts = props => {
-  const accounts = [];
-  props.accounts.forEach(account => {
-    accounts.push(
-      <Account
-        accountName={account.name}
-        accountType={account.type}
-      />
+class Accounts extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getAccounts();
+  }
+
+  // TODO: add switch to toggle account on or off
+  render() {
+    const accounts = [];
+    this.props.accounts.forEach(account => {
+      accounts.push(
+        <Account accountName={account.name} accountType={account.type} />
+      );
+    });
+    return (
+      <div className="column">
+        <h3>Active Accounts</h3>
+        <button id="link-btn" onClick={this.props.onLink}>
+          Link Account
+        </button>
+        {accounts}
+      </div>
     );
-  });
-  return (
-    <div className="column">
-      <h3>Active Accounts</h3>
-      <button id="link-btn" onClick={props.onLink}>Link Account</button>
-      {accounts}
-    </div>
-  );
-};
+  }
+}
 
 export default Accounts;

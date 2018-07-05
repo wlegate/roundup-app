@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 
 const createUser = (req, res, next) => {
+    console.log('createUser')
     let { email, password } = req.body;
     password = bcrypt.hashSync(password, SALT_WORK_FACTOR);
     const query = 'INSERT INTO "User" (email, password) VALUES ($1, $2) RETURNING *;';

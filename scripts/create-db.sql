@@ -4,10 +4,6 @@ ALTER TABLE "Account" DROP CONSTRAINT IF EXISTS "Account_fk1";
 
 ALTER TABLE "Account" DROP CONSTRAINT IF EXISTS "Account_fk2";
 
-ALTER TABLE "Item" DROP CONSTRAINT IF EXISTS "Item_fk0";
-
-ALTER TABLE "Item" DROP CONSTRAINT IF EXISTS "Item_fk1";
-
 ALTER TABLE "Session" DROP CONSTRAINT IF EXISTS "Session_fk0";
 
 ALTER TABLE "Transaction" DROP CONSTRAINT IF EXISTS "Transaction_fk0";
@@ -55,6 +51,7 @@ CREATE TABLE "Account"
 "_id" serial NOT NULL,
 "user_id" serial NOT NULL,
 "plaid_item_id" varchar NOT NULL,
+"plaid_account_id" varchar NOT NULL,
 "iso_currency_code" varchar NOT NULL,
 "name" varchar NOT NULL,
 "official_name" varchar NOT NULL,
@@ -67,20 +64,6 @@ CONSTRAINT Account_pk PRIMARY KEY ("_id")
 WITH (
 OIDS=FALSE
 );
-
-
-
-CREATE TABLE "Item"
-(
-"_id" serial NOT NULL,
-"user_id" serial NOT NULL,
-"plaid_item_id" varchar NOT NULL,
-CONSTRAINT Item_pk PRIMARY KEY ("_id")
-)
-WITH (
-OIDS=FALSE
-);
-
 
 
 CREATE TABLE "Session"
@@ -114,6 +97,7 @@ CREATE TABLE "Transaction"
 "charge_id" serial NOT NULL,
 "type" varchar NOT NULL,
 "plaid_pending_transaction_id" varchar NOT NULL,
+"plaid_transaction_id" varchar NOT NULL,
 CONSTRAINT Transaction_pk PRIMARY KEY
 ("_id")
 )
@@ -156,9 +140,6 @@ OIDS=FALSE
 ALTER TABLE "Account" ADD CONSTRAINT "Account_fk0" FOREIGN KEY ("user_id") REFERENCES "User"("_id");
 ALTER TABLE "Account" ADD CONSTRAINT "Account_fk1" FOREIGN KEY ("plaid_item_id") REFERENCES "User"("_id");
 ALTER TABLE "Account" ADD CONSTRAINT "Account_fk2" FOREIGN KEY ("iso_currency_code") REFERENCES "ISO Currency Code"("alpha_code");
-
-ALTER TABLE "Item" ADD CONSTRAINT "Item_fk0" FOREIGN KEY ("user_id") REFERENCES "User"("_id");
-ALTER TABLE "Item" ADD CONSTRAINT "Item_fk1" FOREIGN KEY ("plaid_item_id") REFERENCES "Account"("plaid_item_id");
 
 ALTER TABLE "Session" ADD CONSTRAINT "Session_fk0" FOREIGN KEY ("user_id") REFERENCES "User"("_id");
 

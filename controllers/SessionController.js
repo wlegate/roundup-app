@@ -2,6 +2,7 @@ const client = require('./../dbclient');
 const uuid = require('uuid/v1');
 
 const startSession = (req, res, next) => {
+  console.log('startSession');
   const user = res.locals.user;
   const query = 'INSERT INTO "Session" (user_id, session) VALUES ($1, $2) RETURNING *;';
   let values = [user._id, uuid()];
@@ -26,10 +27,12 @@ const hasActiveSession = (req, res, next) => {
       if (err) {
         res.redirect('/');
       } else {
-        let { user_id } = response.rows[0];
-        res.locals.user_id = user_id;
-        console.log('res.locals.user_id = ', res.locals.user_id);
-        next();
+        if (response.rows[0]) {
+          let { user_id } = response.rows[0];
+          res.locals.user_id = user_id;
+          console.log('res.locals.user_id = ', res.locals.user_id);
+          next();
+        }
       }
     });
   } else {
