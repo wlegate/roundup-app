@@ -55,13 +55,14 @@ CREATE TABLE "Account"
 "_id" serial NOT NULL,
 "user_id" serial NOT NULL,
 "plaid_item_id" varchar NOT NULL,
-"iso_currency_code" varchar NOT NULL,
+"iso_currency_code" varchar DEFAULT 'USD',
 "name" varchar NOT NULL,
 "official_name" varchar NOT NULL,
 "type" varchar NOT NULL,
 "subtype" varchar NOT NULL,
 "plaid_access_token" varchar NOT NULL,
-"stripe_bank_account_token" varchar NOT NULL,
+"stripe_bank_account_token" varchar,
+"numbers" json,
 CONSTRAINT Account_pk PRIMARY KEY ("_id")
 )
 WITH (

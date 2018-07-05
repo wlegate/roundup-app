@@ -21,7 +21,20 @@ const UserController = require('./controllers/UserController');
 
 const APP_PORT = process.env.PORT || 8080;
 
-module.exports = app;
+const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
+const PLAID_SECRET = process.env.PLAID_SECRET;
+const PLAID_PUBLIC_KEY = process.env.PLAID_PUBLIC_KEY;
+const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
+
+// Initialize the Plaid client
+const client = new plaid.Client(
+  PLAID_CLIENT_ID,
+  PLAID_SECRET,
+  PLAID_PUBLIC_KEY,
+  plaid.environments[PLAID_ENV]
+);
+
+module.exports = { app, client };
 
 app.use(express.static('build'));
 app.use(bodyParser.json());
