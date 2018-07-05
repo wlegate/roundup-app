@@ -162,8 +162,6 @@ app.get('/transactions',
   }
 );
 
-
-
 // ADMIN ROUTES
 
 const admin = require('./routes/admin');

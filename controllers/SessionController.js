@@ -19,6 +19,7 @@ const startSession = (req, res, next) => {
 
 const hasActiveSession = (req, res, next) => {
   const session = req.cookies.session;
+  console.log('hasActiveSession: ', session);
   if (session) {
     const query = `SELECT user_id FROM "Session" WHERE session='${session}'`;
     client.query(query, (err, response) => {
@@ -27,13 +28,13 @@ const hasActiveSession = (req, res, next) => {
       } else {
         let { user_id } = response.rows[0];
         res.locals.user_id = user_id;
+        console.log('res.locals.user_id = ', res.locals.user_id);
         next();
       }
     });
   } else {
     res.redirect('/');
   }
-  next();
 };
 
 // TODO: add route to auto-delete sessions after x period of time
