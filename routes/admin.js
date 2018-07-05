@@ -8,6 +8,20 @@ const AccountController = require('./../controllers/AccountController');
 const { ROUTES } = require('./../config');
 
 /**
+ * TODO: Add documentaion (see examples for routes below)
+ */
+router.post(
+  ROUTES.API.ADMIN.GET_ACCESS_TOKEN,
+  UserController.getUserID,
+  PlaidController.getAccessTokenAndItemID,
+  PlaidController.getItemDetails,
+  AccountController.createAccounts,
+  AccountController.fetchAccounts
+);
+
+/**
+ * POST /transactions
+ *
  * Body:
  * [
  *  {
@@ -27,23 +41,11 @@ const { ROUTES } = require('./../config');
  *
  * NOTE: _id, charge_id, and plaid_pending_transaction_id fields are omitted
  */
-
-router.post(
-  ROUTES.API.ADMIN.GET_ACCESS_TOKEN,
-  UserController.getUserID,
-  PlaidController.getAccessTokenAndItemID,
-  PlaidController.getItemDetails,
-  AccountController.createAccounts,
-  AccountController.fetchAccounts
-);
-
 router.post('/transactions', (req, res) => {});
 
-router.get('/transactions', (req, res) => {
-  res.send('testing 1, 2, 3…');
-});
-
 /**
+ * POST /accounts
+ *
  * Creates db Item and Account(s)
  *
  *  Request Body (Object or Array of Objects):

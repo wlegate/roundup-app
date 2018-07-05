@@ -14,8 +14,10 @@ const handler = Plaid.create({
    */
   webhook: PLAID.WEBHOOK_URI,
   onSuccess: (public_token, metadata) => {
-    // exchange the temporary Plaid public token for an access token
-    // must prepend /admin since ROUTES.API.ADMIN.GET_ACCESS_TOKEN doesn't include the parent path component
+    /**
+     * Exchange the temporary Plaid public token for an access token
+     * NOTE: must prepend /admin since ROUTES.API.ADMIN.GET_ACCESS_TOKEN doesn't include the parent path component
+     */
     $.post(`/admin${ROUTES.API.ADMIN.GET_ACCESS_TOKEN}`, { public_token });
   },
   onExit: (err, metadata) => {
@@ -32,17 +34,19 @@ const handler = Plaid.create({
      */
   },
   onEvent: (eventName, metadata) => {
-    // TODO: Log events in analytics
-    // Optionally capture Link flow events, streamed through
-    // this callback as your users connect an Item to Plaid.
-    // For example:
-    // eventName = "TRANSITION_VIEW"
-    // metadata  = {
-    //   link_session_id: "123-abc",
-    //   mfa_type:        "questions",
-    //   timestamp:       "2017-09-14T14:42:19.350Z",
-    //   view_name:       "MFA",
-    // }
+    /**
+     * TODO: Log events in analytics
+     * Optionally capture Link flow events, streamed through
+     * this callback as your users connect an Item to Plaid.
+     * For example:
+     * eventName = "TRANSITION_VIEW"
+     * metadata  = {
+     *  link_session_id: "123-abc",
+     *  mfa_type:        "questions",
+     *  timestamp:       "2017-09-14T14:42:19.350Z",
+     *  view_name:       "MFA",
+     * }
+     */
   }
 });
 
