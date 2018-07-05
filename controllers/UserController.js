@@ -26,6 +26,7 @@ const authenticateUser = (req, res, next) => {
         if (err) {
             console.log(err.stack)
         } else {
+            console.log(response);
             const user = response.rows[0];
             res.locals.user = user;
             let result = bcrypt.compareSync(password, user.password);

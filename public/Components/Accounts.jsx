@@ -12,7 +12,7 @@ const Accounts = props => {
     );
   });
   return (
-    <div className="account-container" class="column">
+    <div className="column">
       <h3>Active Accounts</h3>
       <button id="link-btn" onClick={props.onLink}>Link Account</button>
       {accounts}

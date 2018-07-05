@@ -6,8 +6,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const plaid = require('plaid');
 const path = require('path');
+
+// Config
+const { APP_NAME } = require('./config');
 
 // Controllers
 const AccountController = require('./controllers/AccountController');
@@ -46,10 +48,9 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.set('port', APP_PORT);
 
-app.get('/',
-  UserController.authenticateUser,
-  (req, res) => { res.sendFile(path.join(__dirname, '/build/', '/index.html')) }
-);
+app.get('/', (req, res) => {
+  res.render('index.ejs', { APP_NAME });
+});
 
 /**
  * Creates db User and Session
@@ -92,7 +93,8 @@ app.post(
  * }
  *
  */
-app.post('/login',
+app.post(
+  '/login',
   UserController.authenticateUser,
   SessionController.startSession,
   (req, res) => {
@@ -117,7 +119,8 @@ app.post('/login',
  *
  */
 
-app.get('/accounts',
+app.get(
+  '/accounts',
   SessionController.hasActiveSession,
   AccountController.fetchAccounts,
   (req, res) => {
@@ -153,7 +156,8 @@ app.get('/accounts',
  * ]
  *
  */
-app.get('/transactions',
+app.get(
+  '/transactions',
   SessionController.hasActiveSession,
   TransactionController.fetchTransactions,
   (req, res) => {
@@ -169,7 +173,6 @@ app.use('/admin', admin);
 // app.get('*', function(request, response) {
 //   response.sendFile(path.resolve(__dirname, './build', 'index.html'));
 // });
-
 
 // LEGACY REFERENCE
 
@@ -282,6 +285,6 @@ app.use('/admin', admin);
 //   );
 // });
 
-var server = app.listen(APP_PORT, function () {
+var server = app.listen(APP_PORT, function() {
   console.log('plaid-walkthrough server listening on port ' + APP_PORT);
 });

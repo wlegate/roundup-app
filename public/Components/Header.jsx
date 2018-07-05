@@ -1,22 +1,23 @@
-import React from "react";
+import React from 'react';
+import CONFIG from './../../config';
 
 const Header = props => {
-  let welcomeBanner = [];
-  let headerContainerClass = "header-container";
-  let logoImageClass = "logo-img";
+  const welcomeBanner = [];
+  const headerContainerClass = props.currentUser
+    ? 'header-container-logged-in'
+    : 'header-container';
+  const logoImageClass = props.currentUser ? 'logo-img-logged-in' : 'logo-img';
+
   if (props.currentUser) {
     welcomeBanner.push(<h1>Welcome {props.currentUser}</h1>);
-    headerContainerClass = "header-container-logged-in";
-    logoImageClass = "logo-img-logged-in";
   } else {
-    welcomeBanner.push(<h1>Welcome to Pennies for Progress</h1>);
+    welcomeBanner.push(<h1>{`Welcome to ${CONFIG.APP_NAME}!`}</h1>);
   }
   return (
     <div className={headerContainerClass}>
       <img
         className={logoImageClass}
         src="https://upload.wikimedia.org/wikipedia/commons/2/2e/US_One_Cent_Obv.png"
-        alt="penny logo"
       />
       {welcomeBanner}
     </div>
