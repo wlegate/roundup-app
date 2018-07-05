@@ -48,8 +48,7 @@ app.use(
 );
 app.use(cookieParser());
 
-// TODO: Do we still need this?
-// app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs'); // TODO: Do we still need this?
 
 app.set('port', APP_PORT);
 
@@ -177,6 +176,14 @@ app.get(
   }
 );
 
+// TESTING
+app.get(
+  '/pending',
+  SessionController.hasActiveSession,
+  TransactionController.fetchRoundupAmount
+);
+
+// setup /admin/* routes
 app.use('/admin', admin);
 
 // start server
