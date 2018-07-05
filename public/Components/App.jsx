@@ -4,7 +4,6 @@ import Header from "./Header.jsx";
 import Main from "./Main.jsx";
 //conditional components
 import Accounts from "./loggedIn_landing/Accounts.jsx";
-import LoggedInHeader from "./loggedIn_landing/Header.jsx";
 import Transactions from "./loggedIn_landing/Transactions.jsx";
 import Weekly from "./loggedIn_landing/Weekly.jsx";
 
@@ -12,23 +11,21 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: "Wilbur",
-      passValue: "",
-      isLoggedIn: true
+      currentUser: "Wilbur"
     };
 
-    updateInputValue: evt => {
+    updateInputValue: e => {
       this.setState({
-        inputValue: evt.target.value
+        inputValue: e.target.value
       });
     };
   }
 
   render() {
-    if (this.state.isLoggedIn === true) {
+    if (this.state.currentUser) {
       return (
         <div id="app-container">
-          <LoggedInHeader />
+          <Header currentUser={this.state.currentUser} />
           <Transactions />
           <Accounts />
           <Weekly />

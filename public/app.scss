@@ -112,6 +112,9 @@ body {
   padding: 1px;
   background-color: burlywood;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .link-button {
@@ -159,7 +162,7 @@ body {
 .logo-img-logged-in {
   left: 0;
   position: absolute;
-  margin: 15px 0 0 20px;
+  margin: 0 0 0 25px;
   width: 45px;
   height: auto;
 }
@@ -173,7 +176,7 @@ body {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, .2);
 }
 
-#transaction {
+.transaction {
     text-align: center;
     background-color:  burlywood;
     background-image: -webkit-linear-gradient(top, #d5a66d, #f5a66a);
