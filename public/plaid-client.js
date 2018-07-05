@@ -1,6 +1,6 @@
 const CONFIG = require('./../config');
 
-const handler = Plaid.create({
+const handler = plaid.create({
   // TODO: Update from client name from constants file
   clientName: CONFIG.APP_NAME,
   // TODO: Update based on ENV variable
