@@ -4,11 +4,13 @@ import Transaction from "./Transaction.jsx";
 const Transactions = props => {
   const transactions = [];
   props.transactions.forEach(transaction => {
-    transactions.push(<Transaction
-      transactionName={transaction.name}
-      transactionDate={transaction.date}
-      transactionAmount={transaction.amount}
-    />);
+    transactions.push(
+      <Transaction
+        transactionName={transaction.name}
+        transactionDate={transaction.date}
+        transactionAmount={transaction.amount}
+      />
+    );
   });
   return (
     <div className="transaction-container" class="column">
