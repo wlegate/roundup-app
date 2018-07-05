@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 const Weekly = () => (
   <div className="weekly-container" class="column">
@@ -12,10 +12,6 @@ const Weekly = () => (
     <div id="contribution">2 Weeks Ago</div>
     <div id="contribution">3 Weeks Ago</div>
   </div>
-
-
-
-)
-
+);
 
 export default Weekly;
