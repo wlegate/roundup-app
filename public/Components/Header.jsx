@@ -7,6 +7,7 @@ const Header = props => {
     ? 'header-container-logged-in'
     : 'header-container';
   const logoImageClass = props.currentUser ? 'logo-img-logged-in' : 'logo-img';
+
   if (props.currentUser) {
     welcomeBanner.push(<h1>Welcome {props.currentUser}</h1>);
   } else {
@@ -17,7 +18,6 @@ const Header = props => {
       <img
         className={logoImageClass}
         src="https://upload.wikimedia.org/wikipedia/commons/2/2e/US_One_Cent_Obv.png"
-        alt="penny logo"
       />
       {welcomeBanner}
     </div>

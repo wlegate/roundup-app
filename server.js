@@ -19,14 +19,6 @@ const UserController = require('./controllers/UserController');
 
 const APP_PORT = process.env.PORT || 8080;
 
-// Initialize the Plaid client
-// const client = new plaid.Client(
-//   PLAID_CLIENT_ID,
-//   PLAID_SECRET,
-//   PLAID_PUBLIC_KEY,
-//   plaid.environments[PLAID_ENV]
-// );
-
 module.exports = app;
 
 app.use(express.static('build'));

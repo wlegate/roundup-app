@@ -31,7 +31,7 @@ const handler = Plaid.create({
     // Storing this information can be helpful for support.
   },
   onEvent: (eventName, metadata) => {
-    console.log(`event:${eventName}`);
+    console.log(`Plaid Link:${eventName}`);
     // Optionally capture Link flow events, streamed through
     // this callback as your users connect an Item to Plaid.
     // For example:
