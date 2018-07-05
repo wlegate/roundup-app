@@ -1,28 +1,34 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Header from "./Header.jsx";
-import Accounts from "./Accounts.jsx";
-import Transactions from "./Transactions.jsx";
-import Weekly from "./Weekly.jsx";
+import Header from './Header.jsx';
+import Accounts from './Accounts.jsx';
+import Transactions from './Transactions.jsx';
+import Weekly from './Weekly.jsx';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
-// import PlaidClient from './../plaid-client';
 
+import { ROUTES } from './../../config';
+
+/**
+ * The Plaid Link client-side client
+ * WARNING: This is different than the Plaid server-side client
+ */
+import plaidClientHandler from './../plaid-client-handler';
+
+// axios is a promise based HTTP client for the browser and node.js
 import axios from 'axios';
-
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO: persistent authentication
-      currentUser: "Amaze",
+      currentUser: false,
       transactions: [],
       accounts: []
     };
   }
 
-  plaidLink() {
+  plaidLink = () => {
     console.log('plaidLink()');
 
     const handler = Plaid.create({
@@ -42,15 +48,21 @@ class App extends Component {
         // Optional, called when Link loads
       },
       onSuccess: (public_token, metadata) => {
-        console.log(`onSuccess:\n\npublic_token:\n${JSON.stringify(public_token, null, 2)}`);
+        console.log(
+          `onSuccess:\n\npublic_token:\n${JSON.stringify(
+            public_token,
+            null,
+            2
+          )}`
+        );
 
         // Send the public_token to your app server.
         // The metadata object contains info about the institution the
         // user selected and the account ID, if the Account Select view
         // is enabled.
         $.post('/admin/get_access_token', {
-          public_token: public_token,
-        });
+          public_token: public_token
+        }).then(() => this.getAccounts());
       },
       onExit: (err, metadata) => {
         console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}`);
@@ -63,7 +75,9 @@ class App extends Component {
         // Storing this information can be helpful for support.
       },
       onEvent: (eventName, metadata) => {
-        console.log(`onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`);
+        console.log(
+          `onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`
+        );
         // Optionally capture Link flow events, streamed through
         // this callback as your users connect an Item to Plaid.
         // For example:
@@ -78,49 +92,66 @@ class App extends Component {
     });
 
     handler.open();
-  }
+  };
 
-  handleLogin = (e) => {
+  handleLogin = e => {
     e.preventDefault();
-    axios.post('/login', {
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-    }).then((response) => {
-      if (response.data.session) this.setState({ currentUser: true });
-      else console.log('Unable to login.');
-    }).catch((err) => console.log(err));
-  }
+    axios
+      .post(ROUTES.CLIENT.LOGIN, {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      })
+      .then(response => {
+        if (response.data.session) this.setState({ currentUser: true });
+        else console.log('Unable to login.');
+      })
+      .catch(err => console.log(err));
+  };
 
   handleRefreshTransactions = () => {
-    axios.get('/transactions')
-      .then((response) => {
+    axios
+      .get(ROUTES.CLIENT.TRANSACTIONS)
+      .then(response => {
         if (response.data) this.setState({ transactions: response.data });
         else console.log('No transactions found.');
       })
-      .catch((err) => console.log(err));
-  }
+      .catch(err => console.log(err));
+  };
+
+  getAccounts = () => {
+    axios
+      .get('/accounts')
+      .then(response => {
+        if (response) this.setState({ accounts: response.data });
+        else console.log('No accounts found.');
+      })
+      .catch(err => console.log(err));
+  };
 
   componentDidMount() {
-    if (this.state.currentUser) {
-      this.handleRefreshTransactions();
-      axios
-        .get('/accounts')
-        .then(response => {
-          if (response) this.setState({ accounts: response.data });
-          else console.log('No accounts found.');
-        })
-        .catch(err => console.log(err));
+    if (!this.state.currentUser) {
+      axios.get('/cookie').then(response => {
+        if (response.data.success) this.setState({ currentUser: true });
+      });
     }
   }
 
+  // TODO: add this weeks total contribution display
   render() {
     if (this.state.currentUser) {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
           <div id="user-landing">
-            <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions} />
-            <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
+            <Transactions
+              refreshTransactions={this.handleRefreshTransactions}
+              transactions={this.state.transactions}
+            />
+            <Accounts
+              getAccounts={this.getAccounts}
+              accounts={this.state.accounts}
+              onLink={this.plaidLink}
+            />
             {/* <Weekly /> */}
           </div>
         </div>
