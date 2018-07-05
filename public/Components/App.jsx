@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: "amaze@bowls.com",
+      currentUser: "amaze",
       transactions: [],
       accounts: [],
     };
@@ -31,14 +31,18 @@ class App extends Component {
     }).then().catch();
   }
 
+  handleRefreshTransactions = () => {
+    axios.get('/transactions')
+    .then((response) => {
+      if (response) this.setState({ transactions: response.data });
+      else console.log('No transactions found.');
+    })
+    .catch((err) => console.log(err));
+  }
+
   componentDidMount() {
     if (this.state.currentUser) {
-      axios.get('/transactions')
-        .then((response) => {
-          if (response) this.setState({ transactions: response.data });
-          else console.log('No transactions found.');
-        })
-        .catch((err) => console.log(err));
+      this.handleRefreshTransactions();
 
       axios.get('/accounts')
         .then((response) => {
@@ -53,7 +57,7 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <Transactions transactions={this.state.transactions}/>
+          <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions}/>
           <Accounts accounts={this.state.accounts}/>
           <Weekly />
         </div>
