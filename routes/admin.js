@@ -2,8 +2,6 @@
 const express = require('express');
 const router = express.Router();
 
-console.log(`router: ${router}`);
-
 /**
  * Body:
  * [
@@ -24,7 +22,7 @@ console.log(`router: ${router}`);
  *
  * NOTE: _id, charge_id, and plaid_pending_transaction_id fields are omitted
  */
-router.post('/transactions', (req, res) => {});
+router.post('/transactions', (req, res) => { });
 
 router.get('/transactions', (req, res) => {
   res.send('testing 1, 2, 3…');
@@ -49,6 +47,6 @@ router.get('/transactions', (req, res) => {
  * Response Body: (an array of Account objects created in database)
  *
  */
-router.post('/accounts', (req, res) => {});
+router.post('/accounts', (req, res) => { });
 
 module.exports = router;

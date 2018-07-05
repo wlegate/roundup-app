@@ -15,7 +15,6 @@ const Transactions = props => {
   return (
     <div className="transaction-container" class="column">
       <h3>Recent Transactions</h3>
-      <button id="transaction-btn">Refresh Transactions</button>
       {transactions}
     </div>
   );

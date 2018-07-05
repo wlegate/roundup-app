@@ -1,12 +1,23 @@
 import React, { Component } from "react";
+import Account from "./Account.jsx";
 
-const Accounts = () => (
-  <div className="account-container" class="column">
-    <h3>Active Accounts</h3>
-    <button id="link-btn">Link Account</button>
-    <div id="account">Wells Fargo Checking</div>
-    <div id="account">American Express Credit</div>
-  </div>
-);
+const Accounts = props => {
+  const accounts = [];
+  props.accounts.forEach(account => {
+    accounts.push(
+      <Account
+        accountName={account.name}
+        accountType={account.type}
+      />
+    );
+  });
+  return (
+    <div className="account-container" class="column">
+      <h3>Active Accounts</h3>
+      <button id="link-btn">Link Account</button>
+      {accounts}
+    </div>
+  );
+};
 
 export default Accounts;
