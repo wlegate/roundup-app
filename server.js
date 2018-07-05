@@ -7,9 +7,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const plaid = require('plaid');
 
 // Config
-const { APP_NAME } = require('./config');
+const { APP_NAME, PLAID } = require('./config');
 
 // Controllers
 const AccountController = require('./controllers/AccountController');
@@ -21,7 +22,20 @@ const UserController = require('./controllers/UserController');
 
 const APP_PORT = process.env.PORT || 8080;
 
-module.exports = app;
+const PLAID_CLIENT_ID = PLAID.CLIENT_ID;
+const PLAID_SECRET = PLAID.SECRET;
+const PLAID_PUBLIC_KEY = PLAID.PUBLIC_KEY;
+const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
+
+// Initialize the Plaid client
+const client = new plaid.Client(
+  PLAID_CLIENT_ID,
+  PLAID_SECRET,
+  PLAID_PUBLIC_KEY,
+  plaid.environments[PLAID_ENV]
+);
+
+module.exports = { app, client };
 
 app.use(express.static('build'));
 app.use(bodyParser.json());
@@ -272,6 +286,6 @@ app.use('/admin', admin);
 //   );
 // });
 
-var server = app.listen(APP_PORT, function() {
+var server = app.listen(APP_PORT, function () {
   console.log('plaid-walkthrough server listening on port ' + APP_PORT);
 });
