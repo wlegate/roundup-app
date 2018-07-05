@@ -1,6 +1,6 @@
 // const client = require('./../dbclient'); // for DB client
-// const { client } = require('./../server'); // for Plaid client
-const client = require('./../public/plaid-client');
+const { client } = require('./../server'); // for Plaid client
+// const client = require('./../public/plaid-client');
 
 const getAccessTokenAndItemID = (req, res, next) => {
   console.log('in getAccessTokenAndItemID');

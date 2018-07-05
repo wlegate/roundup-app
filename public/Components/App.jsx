@@ -6,7 +6,7 @@ import Transactions from "./Transactions.jsx";
 import Weekly from "./Weekly.jsx";
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
-import PlaidClient from './../plaid-client';
+// import PlaidClient from './../plaid-client';
 
 import axios from 'axios';
 
