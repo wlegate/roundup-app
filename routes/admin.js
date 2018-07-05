@@ -5,6 +5,7 @@ const router = express.Router();
 const UserController = require('./../controllers/UserController');
 const PlaidController = require('./../controllers/PlaidController');
 const AccountController = require('./../controllers/AccountController');
+const { ROUTES } = require('./../config');
 
 /**
  * Body:
@@ -27,15 +28,16 @@ const AccountController = require('./../controllers/AccountController');
  * NOTE: _id, charge_id, and plaid_pending_transaction_id fields are omitted
  */
 
-router.post('/get_access_token',
+router.post(
+  ROUTES.API.ADMIN.GET_ACCESS_TOKEN,
   UserController.getUserID,
   PlaidController.getAccessTokenAndItemID,
   PlaidController.getItemDetails,
   AccountController.createAccounts,
-  AccountController.fetchAccounts,
+  AccountController.fetchAccounts
 );
 
-router.post('/transactions', (req, res) => { });
+router.post('/transactions', (req, res) => {});
 
 router.get('/transactions', (req, res) => {
   res.send('testing 1, 2, 3…');
@@ -60,6 +62,6 @@ router.get('/transactions', (req, res) => {
  * Response Body: (an array of Account objects created in database)
  *
  */
-router.post('/accounts', (req, res) => { });
+router.post('/accounts', (req, res) => {});
 
 module.exports = router;

@@ -12,8 +12,11 @@ module.exports = {
       TRANSACTIONS: '/transactions',
       ACCOUNTS: '/accounts'
     },
-    ADMIN: {
-      GET_ACCESS_TOKEN: '/admin/get_access_token'
+    API: {
+      PUBLIC: {},
+      ADMIN: {
+        GET_ACCESS_TOKEN: '/get_access_token'
+      }
     }
   }
 };

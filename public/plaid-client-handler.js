@@ -15,7 +15,8 @@ const handler = Plaid.create({
   webhook: PLAID.WEBHOOK_URI,
   onSuccess: (public_token, metadata) => {
     // exchange the temporary Plaid public token for an access token
-    $.post(ROUTES.ADMIN.GET_ACCESS_TOKEN, { public_token });
+    // must prepend /admin since ROUTES.API.ADMIN.GET_ACCESS_TOKEN doesn't include the parent path component
+    $.post(`/admin${ROUTES.API.ADMIN.GET_ACCESS_TOKEN}`, { public_token });
   },
   onExit: (err, metadata) => {
     // user exited Plaid Link
