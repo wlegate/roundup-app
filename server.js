@@ -9,9 +9,6 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const plaid = require('plaid');
 
-// Config
-const { APP_NAME, PLAID } = require('./config');
-
 // Controllers
 const AccountController = require('./controllers/AccountController');
 const ChargeController = require('./controllers/ChargeController');
@@ -20,18 +17,19 @@ const SessionController = require('./controllers/SessionController');
 const TransactionController = require('./controllers/TransactionController');
 const UserController = require('./controllers/UserController');
 
-const APP_PORT = process.env.PORT || 8080;
+// Routing
+const admin = require('./routes/admin');
 
-const PLAID_CLIENT_ID = PLAID.CLIENT_ID;
-const PLAID_SECRET = PLAID.SECRET;
-const PLAID_PUBLIC_KEY = PLAID.PUBLIC_KEY;
+// Constants
+const { APP_NAME, PLAID } = require('./config');
+const APP_PORT = process.env.PORT || 8080;
 const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
 
 // Initialize the Plaid client
 const client = new plaid.Client(
-  PLAID_CLIENT_ID,
-  PLAID_SECRET,
-  PLAID_PUBLIC_KEY,
+  PLAID.CLIENT_ID,
+  PLAID.SECRET,
+  PLAID.PUBLIC_KEY,
   plaid.environments[PLAID_ENV]
 );
 
@@ -79,6 +77,8 @@ app.post(
 );
 
 /**
+ * POST /login
+ *
  * Validates login credentials and creates db Session
  *
  * Request Body:
@@ -104,6 +104,8 @@ app.post(
 );
 
 /**
+ * GET /accounts
+ *
  * Returns a JSON list of their connected accounts
  *
  * Response Body:
@@ -119,7 +121,6 @@ app.post(
  * ]
  *
  */
-
 app.get(
   '/accounts',
   SessionController.hasActiveSession,
@@ -130,6 +131,8 @@ app.get(
 );
 
 /**
+ * GET /transactions
+ *
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
  *
  * Response Body:
@@ -166,9 +169,6 @@ app.get(
   }
 );
 
-// ADMIN ROUTES
-
-const admin = require('./routes/admin');
 app.use('/admin', admin);
 
 // app.get('*', function(request, response) {
