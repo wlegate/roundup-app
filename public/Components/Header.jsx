@@ -3,12 +3,12 @@ import CONFIG from './../../config';
 
 const Header = props => {
   const welcomeBanner = [];
-  let headerContainerClass = 'header-container';
-  let logoImageClass = 'logo-img';
+  const headerContainerClass = props.currentUser
+    ? 'header-container-logged-in'
+    : 'header-container';
+  const logoImageClass = props.currentUser ? 'logo-img-logged-in' : 'logo-img';
   if (props.currentUser) {
     welcomeBanner.push(<h1>Welcome {props.currentUser}</h1>);
-    headerContainerClass = 'header-container-logged-in';
-    logoImageClass = 'logo-img-logged-in';
   } else {
     welcomeBanner.push(<h1>{`Welcome to ${CONFIG.APP_NAME}!`}</h1>);
   }
