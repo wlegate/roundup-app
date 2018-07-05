@@ -95,8 +95,8 @@ a:hover {
 .box {
   min-width: 280px;
   max-width: 800px;
-  margin: 20px auto 0;
-  padding: 20px;
+  margin: 0px auto 0;
+  padding: 0px;
   background: #fff;
   border: 1px solid #c9c9c9;
   border-radius: 2px;
@@ -114,7 +114,8 @@ button {
   border-color: #1a476a;
   border-style: solid;
   border-width: 1px;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(19, 49, 69, 0.2);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 1px 2px rgba(19, 49, 69, 0.2);
   color: #fff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px 30px;
