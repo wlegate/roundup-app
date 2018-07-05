@@ -1,7 +1,9 @@
 'use strict';
 
+// enables access environment variables contained within the .env file
 require('dotenv').config();
 
+// EXTERNAL DEPENDENCIES
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -9,7 +11,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const plaid = require('plaid');
 
-// Controllers
+// CONTROLLERS
 const AccountController = require('./controllers/AccountController');
 const ChargeController = require('./controllers/ChargeController');
 const ItemController = require('./controllers/ItemController');
@@ -17,10 +19,10 @@ const SessionController = require('./controllers/SessionController');
 const TransactionController = require('./controllers/TransactionController');
 const UserController = require('./controllers/UserController');
 
-// Routing
+// ROUTES
 const admin = require('./routes/admin');
 
-// Constants
+// CONSTANTS
 const { APP_NAME, PLAID } = require('./config');
 const APP_PORT = process.env.PORT || 8080;
 const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
@@ -35,6 +37,8 @@ const client = new plaid.Client(
 
 module.exports = { app, client };
 
+// EXPRESS - CONFIG
+
 app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(
@@ -44,8 +48,12 @@ app.use(
 );
 app.use(cookieParser());
 
-app.set('view engine', 'ejs');
+// TODO: Do we still need this?
+// app.set('view engine', 'ejs');
+
 app.set('port', APP_PORT);
+
+// EXPRESS - ROUTES
 
 app.get('/', (req, res) => {
   res.render('index.ejs', { APP_NAME });
@@ -171,33 +179,7 @@ app.get(
 
 app.use('/admin', admin);
 
-// app.get('*', function(request, response) {
-//   response.sendFile(path.resolve(__dirname, './build', 'index.html'));
-// });
-
-// LEGACY REFERENCE
-
-// app.get('/accounts', function(request, response, next) {
-//   // Retrieve high-level account information and account and routing numbers
-//   // for each account associated with the Item.
-//   client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
-//     if (error != null) {
-//       var msg = 'Unable to pull accounts from the Plaid API.';
-//       console.log(msg + '\n' + JSON.stringify(error));
-//       return response.json({
-//         error: msg
-//       });
-//     }
-
-//     console.log(authResponse.accounts);
-//     response.json({
-//       error: false,
-//       accounts: authResponse.accounts,
-//       numbers: authResponse.numbers
-//     });
-//   });
-// });
-
-var server = app.listen(APP_PORT, function() {
-  console.log('plaid-walkthrough server listening on port ' + APP_PORT);
+// start server
+app.listen(APP_PORT, function() {
+  console.log(`Running '${APP_NAME}' on port ${APP_PORT}`);
 });
