@@ -24,7 +24,8 @@ class App extends Component {
     this.state = {
       currentUser: false,
       transactions: [],
-      accounts: []
+      accounts: [],
+      totalContribution: 0
     };
   }
 
@@ -150,11 +151,10 @@ class App extends Component {
 
   getContributions = () => {
     axios
-      .get(/*will's route*/)
+      .get('/transactions')
       .then(response => {
-        if (response) {let totals = response.data}
+        if (response) this.setState({ totalContribution: response.data.amount })
         else console.log('something went wrong');
-        return totals;
       })
       .catch(err => console.log(err));
   }
@@ -164,7 +164,7 @@ class App extends Component {
       axios.get('/cookie').then(response => {
         if (response.data.success) this.setState({ currentUser: true });
       });
-    }
+    } 
   }
 
   // TODO: add this weeks total contribution display
@@ -183,7 +183,7 @@ class App extends Component {
               logout={this.handleLogout}
               accounts={this.state.accounts}
               onLink={this.plaidLink}
-              getContributions={this.getContributions}
+              contributions={this.state.totalContribution}
             />
             {/*<Weekly />*/}
           </div>

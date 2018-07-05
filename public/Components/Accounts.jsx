@@ -29,7 +29,7 @@ class Accounts extends Component {
           Logout
         </button>
         {accounts}
-        <Weekly getContributions={this.props.getContributions}/>
+        <Weekly contributions={this.props.contributions}/>
       </div>
     );
   }
