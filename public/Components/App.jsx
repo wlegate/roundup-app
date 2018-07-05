@@ -108,6 +108,21 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handleSignup = e => {
+    e.preventDefault();
+    console.log('handleSignup');
+    axios
+      .post(ROUTES.CLIENT.SIGNUP, {
+        email: document.getElementById('signupemail').value,
+        password: document.getElementById('signuppassword').value
+      })
+      .then(response => {
+        if (response.data.session) this.setState({ currentUser: true });
+        else console.log('Unable to register.');
+      })
+      .catch(err => console.log(err));
+  };
+
   handleRefreshTransactions = () => {
     axios
       .get(ROUTES.CLIENT.TRANSACTIONS)
@@ -163,7 +178,7 @@ class App extends Component {
           <h3>Please Login or Sign Up below.</h3>
           <Login handleLogin={this.handleLogin} />
           <br />
-          <Signup />
+          <Signup handleSignup={this.handleSignup} />
         </div>
       );
     }
