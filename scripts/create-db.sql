@@ -97,8 +97,6 @@ WITH
 OIDS=FALSE
 );
 
-
-
 CREATE TABLE "Transaction"
 (
 "_id" serial NOT NULL,
@@ -111,9 +109,9 @@ CREATE TABLE "Transaction"
 "location" json NOT NULL,
 "name" varchar NOT NULL,
 "is_pending" BOOLEAN NOT NULL,
-"charge_id" serial NOT NULL,
+"charge_id" serial,
 "type" varchar NOT NULL,
-"plaid_pending_transaction_id" varchar NOT NULL,
+"plaid_pending_transaction_id" varchar,
 CONSTRAINT Transaction_pk PRIMARY KEY
 ("_id")
 )

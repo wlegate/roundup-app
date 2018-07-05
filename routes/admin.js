@@ -1,6 +1,6 @@
-// const router = require('./../index');
 const express = require('express');
 const router = express.Router();
+const TransactionController = require('./../controllers/TransactionController');
 
 /**
  * Body:
@@ -13,16 +13,19 @@ const router = express.Router();
  *    date,
  *    location,
  *    name,
- *    pending,
+ *    is_pending,
  *    iso_currency_code,
- *    transaction_type,
+ *    type,
  *  },
  *  …
  * ]
  *
  * NOTE: _id, charge_id, and plaid_pending_transaction_id fields are omitted
  */
-router.post('/transactions', (req, res) => { });
+router.post('/transactions',
+  TransactionController.createTransactions,
+  (req, res) => { res.send('posted transactions') }
+);
 
 router.get('/transactions', (req, res) => {
   res.send('testing 1, 2, 3…');
