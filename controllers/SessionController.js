@@ -3,11 +3,12 @@ const uuid = require('uuid/v1');
 
 const startSession = (req, res, next) => {
   const user = res.locals.user;
-  const query = 'INSERT INTO "Session" (user_id, session) VALUES ($1, $2) RETURNING *;';
+  const query =
+    'INSERT INTO "Session" (user_id, session) VALUES ($1, $2) RETURNING *;';
   let values = [user._id, uuid()];
   client.query(query, values, (err, response) => {
     if (err) {
-      console.log(err.stack)
+      console.log(err.stack);
     } else {
       const { _id, session } = response.rows[0];
       const obj = { id: _id, session };
@@ -29,7 +30,6 @@ const hasActiveSession = (req, res, next) => {
         if (response.rows[0]) {
           let { user_id } = response.rows[0];
           res.locals.user_id = user_id;
-          console.log('res.locals.user_id = ', res.locals.user_id);
           next();
         }
       }
