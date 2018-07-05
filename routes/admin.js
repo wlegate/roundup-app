@@ -5,6 +5,7 @@ const router = express.Router();
 const UserController = require('./../controllers/UserController');
 const PlaidController = require('./../controllers/PlaidController');
 const AccountController = require('./../controllers/AccountController');
+const TransactionController = require('./../controllers/TransactionController');
 
 /**
  * Body:
@@ -35,11 +36,11 @@ router.post('/get_access_token',
   AccountController.fetchAccounts,
 );
 
-router.post('/transactions', (req, res) => { });
-
-router.get('/transactions', (req, res) => {
-  res.send('testing 1, 2, 3…');
-});
+router.post('/transactions',
+  UserController.getUserID,
+  PlaidController.getTransactions,
+  TransactionController.createTransactions,
+);
 
 /**
  * Creates db Item and Account(s)
@@ -60,6 +61,7 @@ router.get('/transactions', (req, res) => {
  * Response Body: (an array of Account objects created in database)
  *
  */
-router.post('/accounts', (req, res) => { });
+
+// router.post('/accounts', (req, res) => { });
 
 module.exports = router;

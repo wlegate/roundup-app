@@ -103,7 +103,6 @@ class App extends Component {
   componentDidMount() {
     if (this.state.currentUser) {
       this.handleRefreshTransactions();
-
       axios
         .get('/accounts')
         .then(response => {
