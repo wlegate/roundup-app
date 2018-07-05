@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import moment from 'moment';
 
 const Transaction = props => (
-  <div class="transaction">
-    <div>Name: {props.transactionName}</div>
-    <div>Date: {props.transactionDate}</div>
-    <div>Amount: ${props.transactionAmount}</div>
+  <div className="transaction">
+    <div>{props.transactionName}</div>
+    <div>Date: {moment(props.transactionDate).format('MM-DD-YYYY')}</div>
+    <div>Amount: {props.transactionAmount}</div>
   </div>
 );
 

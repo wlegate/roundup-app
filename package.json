@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "export NODE_ENV=test && mocha --timeout 8000 test/",
+    "app": "nodemon server.js",
     "start": "npm-run-all --parallel server build",
     "server": "nodemon server.js",
     "build": "webpack -p --watch",
@@ -15,6 +16,7 @@
   "repository": "https://github.com/wlegate/roundup-app",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "1.15.x",
     "cookie-parser": "^1.4.3",
