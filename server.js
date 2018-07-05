@@ -6,8 +6,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const plaid = require('plaid');
 const path = require('path');
+
+// Config
+const { APP_NAME } = require('./config');
 
 // Controllers
 const AccountController = require('./controllers/AccountController');
@@ -33,8 +35,8 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.set('port', APP_PORT);
 
-app.get('/', UserController.authenticateUser, (req, res) => {
-  res.sendFile(path.join(__dirname, '/build/', '/index.html'));
+app.get('/', (req, res) => {
+  res.render('index.ejs', { APP_NAME });
 });
 
 /**
