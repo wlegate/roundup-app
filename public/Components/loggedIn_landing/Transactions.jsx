@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Transaction from "./Transaction.jsx";
+import React, { Component } from 'react';
+import Transaction from './Transaction.jsx';
 
 const Transactions = props => {
   const transactions = [];
@@ -15,7 +15,6 @@ const Transactions = props => {
   return (
     <div className="transaction-container" class="column">
       <h3>Recent Transactions</h3>
-      <button id="transaction-btn" onClick={props.refreshTransactions} >Refresh Transactions</button>
       {transactions}
     </div>
   );
