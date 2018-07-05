@@ -1,7 +1,7 @@
 const client = require('./../dbclient');
 
 // required to do precise math operations
-import { Decimal } from 'decimal.js';
+const Decimal = require('decimal.js');
 
 const fetchTransactions = (req, res, next) => {
   const user_id = res.locals.user_id;
@@ -23,15 +23,21 @@ const fetchRoundupAmount = (req, res) => {
     if (err) res.send(err);
     else {
       const amount = response.rows.reduce((accumulator, transaction) => {
-        const amount = Number(transaction.amount.replace('$', ''));
+        const transAmountStr = transaction.amount.replace('$', '');
+        const transAmountNum = Number(transAmountStr);
+        const accNum =
+          accumulator +
+          (transAmountNum % 1 === 0 ? 0 : 1 - (transAmountNum % 1));
+
         console.log(`transaction: ${transaction}`);
         console.log(`transaction.amount: ${transaction.amount}`);
-        console.log(`amount: ${amount}`);
-        return new Decimal(
-          accumulator + (amount % 1 === 0 ? 0 : 1 - (amount % 1))
-        ).toFixed(2);
+        console.log(`transAmountStr: ${transAmountStr}`);
+        console.log(`transAmountNum: ${transAmountNum}`);
+        console.log(`accNum: ${accNum}`);
+        return accNum;
       }, 0);
-      res.json({ amount });
+      const dec = new Decimal(amount).toFixed(2);
+      res.json({ amount: dec });
     }
   });
 };

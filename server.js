@@ -176,6 +176,10 @@ app.get(
   }
 );
 
+app.get('/cookie', SessionController.hasActiveSession, (req, res) => {
+  res.json({ success: true });
+});
+
 // TESTING
 app.get(
   '/pending',

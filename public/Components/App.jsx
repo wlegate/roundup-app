@@ -22,8 +22,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO: persistent authentication
-      currentUser: 'Amaze',
+      currentUser: false,
       transactions: [],
       accounts: []
     };
@@ -49,14 +48,20 @@ class App extends Component {
         // Optional, called when Link loads
       },
       onSuccess: (public_token, metadata) => {
-        console.log(`onSuccess:\n\npublic_token:\n${JSON.stringify(public_token, null, 2)}`);
+        console.log(
+          `onSuccess:\n\npublic_token:\n${JSON.stringify(
+            public_token,
+            null,
+            2
+          )}`
+        );
 
         // Send the public_token to your app server.
         // The metadata object contains info about the institution the
         // user selected and the account ID, if the Account Select view
         // is enabled.
         $.post('/admin/get_access_token', {
-          public_token: public_token,
+          public_token: public_token
         }).then(() => this.getAccounts());
       },
       onExit: (err, metadata) => {
@@ -70,7 +75,9 @@ class App extends Component {
         // Storing this information can be helpful for support.
       },
       onEvent: (eventName, metadata) => {
-        console.log(`onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`);
+        console.log(
+          `onEvent:\n\neventName:\n${JSON.stringify(eventName, null, 2)}`
+        );
         // Optionally capture Link flow events, streamed through
         // this callback as your users connect an Item to Plaid.
         // For example:
@@ -85,7 +92,7 @@ class App extends Component {
     });
 
     handler.open();
-  }
+  };
 
   handleLogin = e => {
     e.preventDefault();
@@ -113,12 +120,20 @@ class App extends Component {
 
   getAccounts = () => {
     axios
-    .get('/accounts')
-    .then(response => {
-      if (response) this.setState({ accounts: response.data });
-      else console.log('No accounts found.');
-    })
-    .catch(err => console.log(err));
+      .get('/accounts')
+      .then(response => {
+        if (response) this.setState({ accounts: response.data });
+        else console.log('No accounts found.');
+      })
+      .catch(err => console.log(err));
+  };
+
+  componentDidMount() {
+    if (!this.state.currentUser) {
+      axios.get('/cookie').then(response => {
+        if (response.data.success) this.setState({ currentUser: true });
+      });
+    }
   }
 
   // TODO: add this weeks total contribution display
@@ -128,8 +143,15 @@ class App extends Component {
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
           <div id="user-landing">
-            <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions} />
-            <Accounts getAccounts={this.getAccounts} accounts={this.state.accounts} onLink={this.plaidLink} />
+            <Transactions
+              refreshTransactions={this.handleRefreshTransactions}
+              transactions={this.state.transactions}
+            />
+            <Accounts
+              getAccounts={this.getAccounts}
+              accounts={this.state.accounts}
+              onLink={this.plaidLink}
+            />
             {/* <Weekly /> */}
           </div>
         </div>
