@@ -16,13 +16,13 @@ class App extends Component {
     super(props);
     this.state = {
       // TODO: persistent authentication
-      currentUser: "Amaze",
+      currentUser: "",
       transactions: [],
       accounts: []
     };
   }
 
-  plaidLink() {
+  plaidLink = () => {
     console.log('plaidLink()');
 
     const handler = Plaid.create({
@@ -50,7 +50,7 @@ class App extends Component {
         // is enabled.
         $.post('/admin/get_access_token', {
           public_token: public_token,
-        });
+        }).then(() => this.getAccounts());
       },
       onExit: (err, metadata) => {
         console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}`);
@@ -100,20 +100,17 @@ class App extends Component {
       .catch((err) => console.log(err));
   }
 
-  componentDidMount() {
-    if (this.state.currentUser) {
-      this.handleRefreshTransactions();
-
-      axios
-        .get('/accounts')
-        .then(response => {
-          if (response) this.setState({ accounts: response.data });
-          else console.log('No accounts found.');
-        })
-        .catch(err => console.log(err));
-    }
+  getAccounts = () => {
+    axios
+    .get('/accounts')
+    .then(response => {
+      if (response) this.setState({ accounts: response.data });
+      else console.log('No accounts found.');
+    })
+    .catch(err => console.log(err));
   }
 
+  // TODO: add this weeks total contribution display
   render() {
     if (this.state.currentUser) {
       return (
@@ -121,7 +118,7 @@ class App extends Component {
           <Header currentUser={this.state.currentUser} />
           <div id="user-landing">
             <Transactions refreshTransactions={this.handleRefreshTransactions} transactions={this.state.transactions} />
-            <Accounts accounts={this.state.accounts} onLink={this.plaidLink} />
+            <Accounts getAccounts={this.getAccounts} accounts={this.state.accounts} onLink={this.plaidLink} />
             {/* <Weekly /> */}
           </div>
         </div>
