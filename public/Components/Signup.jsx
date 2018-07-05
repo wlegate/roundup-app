@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Signup = () => (
+const Signup = (props) => (
   <div id="signup">
-    <form>
-      <input type="text" placeholder="email" />
-      <input type="password" placeholder="password" />
+    <form onSubmit={(e) => props.handleSignup(e)}>
+      <input type="text" id="signupemail" placeholder="email" />
+      <input type="password" id="signuppassword" placeholder="password" />
       <button className="button" id="signup-button">
         Sign Up
       </button>

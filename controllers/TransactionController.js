@@ -38,6 +38,7 @@ const createTransactions = (req, res, next) => {
             }
         });
     });
+    next();
 }
 
 module.exports = { fetchTransactions, createTransactions };
