@@ -22,6 +22,15 @@ const router = express.Router();
  *
  * NOTE: _id, charge_id, and plaid_pending_transaction_id fields are omitted
  */
+
+router.post('/get_access_token',
+  UserController.getUserID,
+  PlaidController.getAccessTokenAndItemID,
+  PlaidController.getItemDetails,
+  AccountController.createAccounts,
+  AccountController.fetchAccounts,
+);
+
 router.post('/transactions', (req, res) => { });
 
 router.get('/transactions', (req, res) => {
