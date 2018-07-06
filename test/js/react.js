@@ -9,9 +9,11 @@ Enzyme.configure({ adapter: new Adapter() });
 describe("React", () => {
   describe("<App />", () => {
     let wrapper;
+    let user;
 
     before(() => {
       wrapper = Enzyme.shallow(<App />);
+      
     });
     
     it('Renders a <div> with id "app-container"', () => {
@@ -19,6 +21,9 @@ describe("React", () => {
       expect(wrapper.props().id).toEqual("app-container");
     });
 
-    xit("other test", () => {});
+    it('Should handle click on login button', () => {
+      let window = wrapper.find('Login').simulate('click', { preventDefault() {} });
+      expect(window.alert).toHaveBeenCalledWith('clicked');
+    });
   });
 });

@@ -24,7 +24,8 @@ class App extends Component {
     this.state = {
       currentUser: false,
       transactions: [],
-      accounts: []
+      accounts: [],
+      totalContribution: 0
     };
   }
 
@@ -108,6 +109,11 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handleLogout = e => {
+    e.preventDefault();
+    this.setState({ currentUser: false });
+  }
+
   handleSignup = e => {
     e.preventDefault();
     console.log('handleSignup');
@@ -143,6 +149,19 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  getContributions = () => {
+    axios
+      .get('/pending')
+      .then(response => {
+        if (response) {
+          console.log('getContributions function response: ', response.data.amount);
+          this.setState({ totalContribution: response.data.amount })
+        }
+        else console.log('something went wrong');
+      })
+      .catch(err => console.log(err));
+  }
+
   componentDidMount() {
     if (!this.state.currentUser) {
       axios
@@ -160,17 +179,19 @@ class App extends Component {
       return (
         <div id="app-container">
           <Header currentUser={this.state.currentUser} />
-          <div id="user-landing">
+          <div id="user-landing fadein">
             <Transactions
               refreshTransactions={this.handleRefreshTransactions}
               transactions={this.state.transactions}
             />
             <Accounts
               getAccounts={this.getAccounts}
+              logout={this.handleLogout}
               accounts={this.state.accounts}
               onLink={this.plaidLink}
+              getContributions={this.getContributions}
+              contributions={this.state.totalContribution}
             />
-            {/* <Weekly /> */}
           </div>
         </div>
       );
