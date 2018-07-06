@@ -1,7 +1,7 @@
 const expect = require("expect");
 const request = require("supertest");
 // Start server
-const app = require("../../");
+const app = require("../../server.js");
 
 const PORT = process.env.PORT || 3000;
 const HOST = `http://localhost:${PORT}`;
@@ -12,8 +12,8 @@ describe("Route integration", () => {
       xit("returns an account", done => {
         request(HOST)
           .get("/accounts")
-          .end((err, result) => {
-            expect(typeof result.id).toEqual("number");
+          .expect(false)
+          .end((err) => {
             done();
           });
       });
@@ -29,7 +29,8 @@ describe("Route integration", () => {
             password: "password123"
           })
           .end((err, result) => {
-            expect(typeof result.session).toEqual("string");
+            console.log(result);
+            expect(typeof result.data.session).toEqual("string");
             done();
           });
       });

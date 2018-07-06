@@ -63,7 +63,7 @@ class App extends Component {
         // is enabled.
         $.post('/admin/get_access_token', {
           public_token: public_token
-        }).then(() => this.getAccounts());
+        }).then(() => this.getAccounts()).catch(err => console.log(err));
       },
       onExit: (err, metadata) => {
         console.log(`onExit:\n\nerr:\n${JSON.stringify(err, null, 2)}`);
@@ -164,10 +164,13 @@ class App extends Component {
 
   componentDidMount() {
     if (!this.state.currentUser) {
-      axios.get('/cookie').then(response => {
+      axios
+        .get('/cookie')
+        .then(response => {
         if (response.data.success) this.setState({ currentUser: true });
-      });
-    } 
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   // TODO: add this weeks total contribution display
