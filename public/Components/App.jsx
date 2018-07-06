@@ -27,6 +27,7 @@ class App extends Component {
       accounts: [],
       totalContribution: 0
     };
+    this.fetchTransactions = this.fetchTransactions.bind(this);
   }
 
   plaidLink = () => {
@@ -139,6 +140,23 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  fetchTransactions = () => {
+    axios
+      .post('/admin/transactions')
+      .then(() => this.getTransactions())
+      .catch(err => console.log(err));
+  };
+
+  getTransactions = () => {
+    axios
+      .get('/transactions')
+      .then(response => {
+        if (response) this.setState({ transactions: response.data });
+        else console.log('No transactions found.');
+      })
+      .catch(err => console.log(err));
+  };
+
   getAccounts = () => {
     axios
       .get('/accounts')
@@ -189,6 +207,7 @@ class App extends Component {
               logout={this.handleLogout}
               accounts={this.state.accounts}
               onLink={this.plaidLink}
+              fetchTransactions={this.fetchTransactions}
               getContributions={this.getContributions}
               contributions={this.state.totalContribution}
             />

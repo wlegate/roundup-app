@@ -191,9 +191,6 @@ app.get(
   '/transactions',
   SessionController.hasActiveSession,
   TransactionController.fetchTransactions,
-  (req, res) => {
-    res.send('Transactions go here…');
-  }
 );
 
 app.get('/cookie', SessionController.hasActiveSession, (req, res) => {
