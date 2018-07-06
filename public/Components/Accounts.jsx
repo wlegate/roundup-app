@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Account from './Account.jsx';
+import Weekly from './Weekly.jsx';
 
 class Accounts extends Component {
   constructor(props) {
@@ -8,6 +9,8 @@ class Accounts extends Component {
 
   componentDidMount() {
     this.props.getAccounts();
+    console.log('in accounts.jsx, contribution: ', this.props.contribution);
+    this.props.getContributions();
   }
 
   // TODO: add switch to toggle account on or off
@@ -29,7 +32,11 @@ class Accounts extends Component {
           Fetch Transactions
         </button>
         <br />
+        <button id="logout-btn" onClick={this.props.logout}>
+          Logout
+        </button>
         {accounts}
+        <Weekly contributions={this.props.contributions}/>
       </div>
     );
   }

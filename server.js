@@ -1,7 +1,9 @@
 'use strict';
 
+// enables access environment variables contained within the .env file
 require('dotenv').config();
 
+// EXTERNAL DEPENDENCIES
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -9,10 +11,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const plaid = require('plaid');
 
-// Config
-const { APP_NAME, PLAID } = require('./config');
-
-// Controllers
+// CONTROLLERS
 const AccountController = require('./controllers/AccountController');
 const ChargeController = require('./controllers/ChargeController');
 const ItemController = require('./controllers/ItemController');
@@ -20,22 +19,25 @@ const SessionController = require('./controllers/SessionController');
 const TransactionController = require('./controllers/TransactionController');
 const UserController = require('./controllers/UserController');
 
-const APP_PORT = process.env.PORT || 8080;
+// ROUTES
+const admin = require('./routes/admin');
 
-const PLAID_CLIENT_ID = PLAID.CLIENT_ID;
-const PLAID_SECRET = PLAID.SECRET;
-const PLAID_PUBLIC_KEY = PLAID.PUBLIC_KEY;
+// CONSTANTS
+const { APP_NAME, PLAID } = require('./config');
+const APP_PORT = process.env.PORT || 8080;
 const PLAID_ENV = process.env.PLAID_ENV ? process.env.PLAID_ENV : 'sandbox';
 
 // Initialize the Plaid client
 const client = new plaid.Client(
-  PLAID_CLIENT_ID,
-  PLAID_SECRET,
-  PLAID_PUBLIC_KEY,
+  PLAID.CLIENT_ID,
+  PLAID.SECRET,
+  PLAID.PUBLIC_KEY,
   plaid.environments[PLAID_ENV]
 );
 
 module.exports = { app, client };
+
+// EXPRESS - CONFIG
 
 app.use(express.static('build'));
 app.use(bodyParser.json());
@@ -46,8 +48,11 @@ app.use(
 );
 app.use(cookieParser());
 
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs'); // TODO: Do we still need this?
+
 app.set('port', APP_PORT);
+
+// EXPRESS - ROUTES
 
 app.get('/', (req, res) => {
   res.render('index.ejs', { APP_NAME });
@@ -87,6 +92,8 @@ app.get(
 );
 
 /**
+ * POST /login
+ *
  * Validates login credentials and creates db Session
  *
  * Request Body:
@@ -111,7 +118,21 @@ app.post(
   }
 );
 
+/*
+Logs a user out and ends their session
+*/
+
+// app.post(
+//   '/logout',
+//   SessionController.endSession,
+//   (req, res) => {
+//     res.json({ success: true });
+//   }
+// );
+
 /**
+ * GET /accounts
+ *
  * Returns a JSON list of their connected accounts
  *
  * Response Body:
@@ -127,7 +148,6 @@ app.post(
  * ]
  *
  */
-
 app.get(
   '/accounts',
   SessionController.hasActiveSession,
@@ -138,6 +158,8 @@ app.get(
 );
 
 /**
+ * GET /transactions
+ *
  * Params: page (page number, 0-indexed, default = 0), count (per page, default = 20)
  *
  * Response Body:
@@ -171,133 +193,21 @@ app.get(
   TransactionController.fetchTransactions,
 );
 
-// ADMIN ROUTES
+app.get('/cookie', SessionController.hasActiveSession, (req, res) => {
+  res.json({ success: true });
+});
 
-const admin = require('./routes/admin');
-app.use('/admin', admin);
-
-// app.get('*', function(request, response) {
-//   response.sendFile(path.resolve(__dirname, './build', 'index.html'));
-// });
-
-// LEGACY REFERENCE
-
-// app.get('/', function(request, response, next) {
-//   response.render('index.ejs', {
-//     PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
-//     PLAID_ENV: PLAID_ENV
-//   });
-// });
-
-// app.post('/get_access_token', function(request, response, next) {
-//   PUBLIC_TOKEN = request.body.public_token;
-//   client.exchangePublicToken(PUBLIC_TOKEN, function(error, tokenResponse) {
-//     if (error != null) {
-//       var msg = 'Could not exchange public_token!';
-//       console.log(msg + '\n' + JSON.stringify(error));
-//       return response.json({
-//         error: msg
-//       });
-//     }
-//     ACCESS_TOKEN = tokenResponse.access_token;
-//     ITEM_ID = tokenResponse.item_id;
-//     console.log('Access Token: ' + ACCESS_TOKEN);
-//     console.log('Item ID: ' + ITEM_ID);
-//     response.json({
-//       error: false
-//     });
-//   });
-// });
-
-// app.get('/accounts', function(request, response, next) {
-//   // Retrieve high-level account information and account and routing numbers
-//   // for each account associated with the Item.
-//   client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
-//     if (error != null) {
-//       var msg = 'Unable to pull accounts from the Plaid API.';
-//       console.log(msg + '\n' + JSON.stringify(error));
-//       return response.json({
-//         error: msg
-//       });
-//     }
-
-//     console.log(authResponse.accounts);
-//     response.json({
-//       error: false,
-//       accounts: authResponse.accounts,
-//       numbers: authResponse.numbers
-//     });
-//   });
-// });
-
-// app.post('/item', function(request, response, next) {
-//   // Pull the Item - this includes information about available products,
-//   // billed products, webhook information, and more.
-//   client.getItem(ACCESS_TOKEN, function(error, itemResponse) {
-//     if (error != null) {
-//       console.log(JSON.stringify(error));
-//       return response.json({
-//         error: error
-//       });
-//     }
-
-//     // Also pull information about the institution
-//     client.getInstitutionById(itemResponse.item.institution_id, function(
-//       err,
-//       instRes
-//     ) {
-//       if (err != null) {
-//         var msg = 'Unable to pull institution information from the Plaid API.';
-//         console.log(msg + '\n' + JSON.stringify(error));
-//         return response.json({
-//           error: msg
-//         });
-//       } else {
-//         response.json({
-//           item: itemResponse.item,
-//           institution: instRes.institution
-//         });
-//       }
-//     });
-//   });
-// });
-
-// app.post('/transactions', function(request, response, next) {
-//   // Pull transactions for the Item for the last 30 days
-//   var startDate = moment()
-//     .subtract(30, 'days')
-//     .format('YYYY-MM-DD');
-//   var endDate = moment().format('YYYY-MM-DD');
-//   client.getTransactions(
-//     ACCESS_TOKEN,
-//     startDate,
-//     endDate,
-//     {
-//       count: 250,
-//       offset: 0
-//     },
-//     function(error, transactionsResponse) {
-//       if (error != null) {
-//         console.log(JSON.stringify(error));
-//         return response.json({
-//           error: error
-//         });
-//       }
-//       console.log(
-//         'pulled ' + transactionsResponse.transactions.length + ' transactions'
-//       );
-//       response.json(transactionsResponse);
-//     }
-//   );
-// });
+// TESTING
 app.get(
-  '/cookie',
+  '/pending',
   SessionController.hasActiveSession,
-  (req, res) => {
-    res.json({ success: true });
-  }
+  TransactionController.fetchRoundupAmount
 );
 
-var server = app.listen(APP_PORT, function () {
-  console.log('plaid-walkthrough server listening on port ' + APP_PORT);
+// setup /admin/* routes
+app.use('/admin', admin);
+
+// start server
+app.listen(APP_PORT, function() {
+  console.log(`Running '${APP_NAME}' on port ${APP_PORT}`);
 });
