@@ -151,9 +151,12 @@ class App extends Component {
 
   getContributions = () => {
     axios
-      .get('/transactions')
+      .get('/pending')
       .then(response => {
-        if (response) this.setState({ totalContribution: response.data.amount })
+        if (response) {
+          console.log('getContributions function response: ', response.data.amount);
+          this.setState({ totalContribution: response.data.amount })
+        }
         else console.log('something went wrong');
       })
       .catch(err => console.log(err));
@@ -165,6 +168,7 @@ class App extends Component {
         if (response.data.success) this.setState({ currentUser: true });
       });
     } 
+    // this.setState({ totalContribution: this.getContributions() });
   }
 
   // TODO: add this weeks total contribution display
@@ -183,6 +187,7 @@ class App extends Component {
               logout={this.handleLogout}
               accounts={this.state.accounts}
               onLink={this.plaidLink}
+              getContributions={this.getContributions}
               contributions={this.state.totalContribution}
             />
             {/*<Weekly />*/}

@@ -9,6 +9,8 @@ class Accounts extends Component {
 
   componentDidMount() {
     this.props.getAccounts();
+    console.log('in accounts.jsx, contribution: ', this.props.contribution);
+    this.props.getContributions();
   }
 
   // TODO: add switch to toggle account on or off
