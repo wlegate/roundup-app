@@ -190,7 +190,6 @@ class App extends Component {
               getContributions={this.getContributions}
               contributions={this.state.totalContribution}
             />
-            {/*<Weekly />*/}
           </div>
         </div>
       );
