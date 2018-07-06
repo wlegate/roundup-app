@@ -24,6 +24,11 @@ class Accounts extends Component {
         <button id="link-btn" onClick={this.props.onLink}>
           Link Account
         </button>
+        <br />
+        <button id="link-btn" onClick={this.props.fetchTransactions}>
+          Fetch Transactions
+        </button>
+        <br />
         {accounts}
       </div>
     );

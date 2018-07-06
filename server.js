@@ -169,9 +169,6 @@ app.get(
   '/transactions',
   SessionController.hasActiveSession,
   TransactionController.fetchTransactions,
-  (req, res) => {
-    res.send('Transactions go here…');
-  }
 );
 
 // ADMIN ROUTES

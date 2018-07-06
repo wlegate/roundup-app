@@ -40,6 +40,7 @@ router.post('/transactions',
   UserController.getUserID,
   PlaidController.getTransactions,
   TransactionController.createTransactions,
+  TransactionController.fetchTransactions,
 );
 
 /**

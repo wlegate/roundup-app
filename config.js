@@ -14,7 +14,8 @@ module.exports = {
       ACCOUNTS: '/accounts'
     },
     ADMIN: {
-      GET_ACCESS_TOKEN: '/admin/get_access_token'
+      GET_ACCESS_TOKEN: '/admin/get_access_token',
+      TRANSACTIONS: '/admin/transactions',
     }
   }
 };
