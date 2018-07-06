@@ -2,8 +2,6 @@ const expect = require("expect");
 const React = require("react");
 import App from "../../public/Components/App.jsx";
 import Enzyme from "enzyme";
-import Jest from "jest";
-import shallow from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });

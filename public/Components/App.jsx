@@ -168,7 +168,6 @@ class App extends Component {
         if (response.data.success) this.setState({ currentUser: true });
       });
     } 
-    // this.setState({ totalContribution: this.getContributions() });
   }
 
   // TODO: add this weeks total contribution display

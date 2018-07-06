@@ -10,8 +10,8 @@ module.exports = {
   },
   ROUTES: {
     CLIENT: {
-      //LOGIN: '/login',
-      LOGOUT: '/logout',
+      LOGIN: '/login',
+      // LOGOUT: '/logout',
       SIGNUP: '/register',
       TRANSACTIONS: '/transactions',
       ACCOUNTS: '/accounts'
